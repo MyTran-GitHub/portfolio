@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/colors.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/typography.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/effects.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/animation.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/base.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/styles.css">
+<script src="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,300;0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background-color:var(--paper-100); background-image:var(--paper-grain); color:var(--ink-800); font:var(--text-default); -webkit-font-smoothing:antialiased; }
+  .ab-jump { color:var(--ink-600); text-decoration:none; border-bottom:2px solid transparent; padding-bottom:2px; transition:color .2s, border-color .2s; }
+  .ab-jump:hover { color:var(--accent-ink); border-bottom-color:var(--accent); }
+  .ab-tag { display:inline-block; border:2px solid var(--stroke); background:var(--paper-50); border-radius:980px; padding:7px 16px; font:400 15px var(--font-marker); color:var(--ink-800); box-shadow:2px 3px 0 rgba(34,31,26,.14); }
+  .ab-card { border:2px solid var(--stroke); background:var(--surface-card); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; box-shadow:2px 3px 0 rgba(34,31,26,.16); transition:transform .22s var(--ease-out), box-shadow .22s var(--ease-out); }
+  .ab-card:hover { transform:translateY(-4px); box-shadow:4px 6px 0 rgba(34,31,26,.18); }
+  .ab-btn { text-decoration:none; }
+  .pd-btn--secondary, .pd-btn--ghost { background: var(--hi-mint) !important; color: var(--ink-900) !important; border-color: var(--stroke) !important; transition: background .25s var(--ease-out), color .25s var(--ease-out), border-color .25s var(--ease-out) !important; }
+  .pd-btn--secondary:hover, .pd-btn--ghost:hover { background: var(--accent-ink) !important; border-color: var(--accent-ink) !important; }
+  .pd-btn--secondary:hover, .pd-btn--secondary:hover *, .pd-btn--ghost:hover, .pd-btn--ghost:hover * { color: var(--paper-50) !important; }
+</style>
+</helmet>
+
+<div style="--accent:#34613C; --accent-ink:#34613C; --accent-soft:#BFE3C2; --hi-mint:#BFE3C2; --lavender-100:#E3DAF2; --lavender-200:#D3C4EE; --lavender-ink:#5B3FA0; --font-body:'Lora','Kalam','Patrick Hand',cursive; position:relative; overflow-x:hidden;">
+
+  <nav style="position:sticky; top:0; z-index:200; background:rgba(251,246,233,0.86); backdrop-filter:blur(6px); border-bottom:2px solid var(--stroke);">
+    <div style="max-width:1000px; margin:0 auto; padding:12px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <a href="The Living Journey.dc.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
+        <span style="display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:2px solid var(--stroke); background:var(--accent-soft); border-radius:38% 62% 63% 37% / 41% 44% 56% 59%; font:700 19px var(--font-marker); color:var(--accent-ink); transform:rotate(-4deg); flex-shrink:0;">MT</span>
+        <span style="font-weight:400; font-size:25px; font-family:'Patrick Hand','Comic Sans MS',cursive; color:var(--ink-900); line-height:1; white-space:nowrap;">My Tran</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:16px; font:400 16px var(--font-marker); white-space:nowrap;">
+        <span style="color:var(--accent-ink); border-bottom:2px solid var(--accent);">About me</span>
+        <a href="Projects.dc.html" class="ab-jump">Projects</a>
+        <a href="The Living Journey.dc.html#footer" style="text-decoration:none;">
+          <span style="display:inline-block; padding:7px 16px; border:2px solid var(--stroke); background:var(--paper-50); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; color:var(--ink-900); font:400 16px var(--font-marker); box-shadow:2px 3px 0 rgba(34,31,26,.16); transform:rotate(-1deg);">Say hello</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header data-screen-label="About Hero" style="position:relative; max-width:1000px; margin:0 auto; padding:70px 28px 40px;">
+    <div style="display:grid; grid-template-columns:auto 1fr; gap:40px; align-items:center;">
+      <div style="position:relative; flex-shrink:0;">
+        <div style="position:absolute; inset:-14px; border-radius:50%; border:2px dashed var(--hi-mint);"></div>
+        <div style="position:relative; width:150px; height:150px; border-radius:50%; overflow:hidden; border:5px solid var(--paper-50); box-shadow:2px 3px 0 var(--stroke);">
+          <img src="assets/profile.png" alt="My Tran" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div style="position:absolute; bottom:-4px; right:-18px; transform:rotate(6deg);">
+          <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="lavender" hint-size="auto,30px">the gap-finder</x-import>
+        </div>
+      </div>
+      <div>
+        
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WrittenHeading" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" as="h1" hint-size="auto,80px" style="font-size: 50px; color: var(--ink-900); font-family: Patrick Hand; text-align: left; width: 100%; font-style: normal; text-decoration-line: none">About me</x-import><p style="margin: 10px 0 0; max-width: 600px; font: 300 20px/1.6 var(--font-body); color: var(--ink-600); width: 653px; height: 67px">I'm curious, and I care.</p>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width:1000px; margin:0 auto; padding:0 28px;">
+    <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="wavy" doodle="✦" hint-size="100%,50px"></x-import>
+  </div>
+
+  <!-- ============ THE PATTERN ============ -->
+  <section data-screen-label="The Pattern" style="max-width:1000px; margin:0 auto; padding:36px 28px 10px;">
+    <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:10px;">The pattern</div>
+    <p style="margin: 0 0 22px; font: 300 21px/1.6 var(--font-body); color: var(--ink-700); max-width: 760px; width: 900px; font-size: 19px">Across four very different fields, I kept running into the same structural problem.</p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px;">
+      <span class="ab-tag" style="transform:rotate(-2deg);">Climate adaptation</span>
+      <span class="ab-tag" style="transform:rotate(1.5deg);">Agriculture</span>
+      <span class="ab-tag" style="transform:rotate(-1deg);">Wildfire risk</span>
+      <span class="ab-tag" style="transform:rotate(2deg);">Urban environments</span>
+    </div>
+
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; box-shadow:2px 3px 0 rgba(34,31,26,.16); padding:26px 30px; margin-bottom:46px; transform:rotate(-.4deg);">
+      <p style="margin:0; font:400 22px/1.5 var(--font-marker); color:var(--ink-900);">Environmental decisions are often made without reliable, comparable evidence of outcomes.</p>
+    </div>
+  </section>
+
+  <!-- ============ THE FOCUS ============ -->
+  <section data-screen-label="The Focus" style="max-width:1000px; margin:0 auto; padding:10px 28px 10px;">
+    <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:10px;">The focus</div>
+    <p style="margin: 0 0 46px; font: 300 20px/1.65 var(--font-body); color: var(--ink-600); max-width: 900px; font-size: 19px">My work is shaped by this gap: building Earth observation systems that go beyond measuring environmental change to understanding the impact of interventions under real-world uncertainty</p>
+  </section>
+
+  <div style="max-width:1000px; margin:0 auto; padding:0 28px;">
+    <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Right now" doodle="⚙" hint-size="100%,50px"></x-import>
+  </div>
+
+  <!-- ============ CURRENT WORK ============ -->
+  <section data-screen-label="Current Work" style="max-width:1000px; margin:0 auto; padding:36px 28px 90px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:stretch;">
+
+      <a href="project-infer.dc.html" class="ab-btn">
+        <div class="ab-card" style="height:100%; box-sizing:border-box; padding:26px; transform:rotate(.6deg);">
+          <span style="font:500 11px 'Fira Code',monospace; letter-spacing:.5px; color:var(--lavender-ink); background:var(--lavender-100); border-radius:980px; padding:4px 11px;">OPEN SOURCE · ONGOING</span>
+          <h3 style="margin:14px 0 10px; font:400 24px var(--font-marker); color:var(--ink-900);">CausalImagesR</h3>
+          <p style="margin:0 0 18px; font:300 16.5px/1.6 var(--font-body); color:var(--ink-600);">I'm contributing to this open-source package to advance the use of Earth observation foundation models for environmental impact evaluation — spanning wildfire risk, agriculture, and land use change.</p>
+          <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="secondary" size="md" hint-size="auto,44px" style="font-family: 'Patrick Hand';">See project  →</x-import>
+        </div>
+      </a>
+
+      <a href="project-fuego.dc.html" class="ab-btn">
+        <div class="ab-card" style="height:100%; box-sizing:border-box; padding:26px; transform:rotate(-.6deg);">
+          <span style="font:500 11px 'Fira Code',monospace; letter-spacing:.5px; color:#8a3a2a; background:var(--pen-red-soft); border-radius:980px; padding:4px 11px;">IN PROGRESS</span>
+          <h3 style="margin:14px 0 10px; font:400 24px var(--font-marker); color:var(--ink-900);">Wildfire risk × carbon reversal</h3>
+          <p style="margin:0 0 18px; font:300 16.5px/1.6 var(--font-body); color:var(--ink-600);">In parallel, I'm working with wildfire and carbon market practitioners on an intelligence layer for wildfire risk and carbon credit reversal — for reforestation projects where fire can release sequestered carbon back into the atmosphere, invalidating the credits it earned.</p>
+          <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="ghost" size="md" hint-size="auto,44px" style="font-family: 'Patrick Hand';">See project  →</x-import>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="footer" style="background:var(--ink-900); color:var(--paper-100); padding:56px 28px;">
+    <div style="max-width:1000px; margin:0 auto; text-align:center;">
+      <p style="margin:0 0 18px; font-weight:400; font-size:34px; font-family:'Patrick Hand','Comic Sans MS',cursive; font-style:italic; color:var(--paper-50);">Back to the journey?</p>
+      <a href="The Living Journey.dc.html" style="text-decoration:none; padding:11px 24px; border:2px solid var(--paper-100); background:var(--paper-50); color:var(--ink-900); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; font:400 18px var(--font-marker);">↑ every node</a>
+      <div style="margin-top:22px; font:500 12px 'Fira Code',monospace; color:var(--ink-400);">© 2026 My Tran · tran@uni.minerva.edu</div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+</body>
+</html>

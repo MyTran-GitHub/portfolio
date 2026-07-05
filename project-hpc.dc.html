@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<dc-import name="ProjectShell" title="The Data Cube" tagline="Scaling foundation model inference to 1M km² — out-of-core HPC for continental-scale Earth observation, streaming a quarter-century of Landsat that will never fit in memory." tags="Out-of-core HPC, Dask, STAC, GeoParquet" band="#D9EDD2" hint-size="100%,100%">
+
+  <div style="border:2px solid var(--stroke); border-left:6px solid var(--accent-ink); background:var(--paper-50); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; padding:22px 26px; margin-bottom:46px; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+    <div style="font:500 13px 'Fira Code',monospace; letter-spacing:.5px; color:var(--accent-ink); margin-bottom:8px;">THE CONSTRAINT</div>
+    <p style="margin:0; font:300 19px/1.5 var(--font-body); color:var(--ink-700);">A quarter-century of Landsat over 1,000,000 km² exceeds any single machine's memory. The naïve pipeline dies at the boundary — the engineering is in never loading it all at once.</p>
+  </div>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:0 0 16px;">Architecture: pixels to feature store</h2>
+  <div style="display:flex; flex-wrap:nowrap; align-items:center; gap:6px; overflow-x:auto; padding-bottom:10px; margin-bottom:20px;">
+    <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 10px; flex:1; min-width:0;">
+      <div style="font:500 10px 'Fira Code',monospace; color:#2c5a32; margin-bottom:4px;">01 · STORE</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-900);">AWS S3 (COGs)</div>
+      <div style="font:400 10px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">cloud-optimized GeoTIFFs</div>
+    </div>
+    <span style="font:700 15px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+    <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 10px; flex:1; min-width:0;">
+      <div style="font:500 10px 'Fira Code',monospace; color:#2c5a32; margin-bottom:4px;">02 · DISCOVER</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-900);">STAC API</div>
+      <div style="font:400 10px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">query by bbox + date, not by file</div>
+    </div>
+    <span style="font:700 15px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+    <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 10px; flex:1; min-width:0;">
+      <div style="font:500 10px 'Fira Code',monospace; color:#2c5a32; margin-bottom:4px;">03 · CUBE</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-900);">Dask / Xarray</div>
+      <div style="font:400 10px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">lazy, chunked datacube</div>
+    </div>
+    <span style="font:700 15px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+    <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 10px; flex:1; min-width:0;">
+      <div style="font:500 10px 'Fira Code',monospace; color:#2c5a32; margin-bottom:4px;">04 · INFER</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-900);">Foundation Model</div>
+      <div style="font:400 10px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">distributed embedding inference</div>
+    </div>
+    <span style="font:700 15px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+    <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 10px; flex:1; min-width:0;">
+      <div style="font:500 10px 'Fira Code',monospace; color:#2c5a32; margin-bottom:4px;">05 · STORE</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-900);">GeoParquet</div>
+      <div style="font:400 10px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">columnar feature store</div>
+    </div>
+  </div>
+  <p style="font:300 15px/1.6 var(--font-body); color:var(--ink-500); margin:0 0 46px;">Nothing downstream ever opens a raw scene file — every stage after S3 talks to metadata or arrays, never paths.</p>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Why these tools" doodle="⚙" hint-size="100%,50px"></x-import>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:30px 0 16px;">Three choices, and why the alternative loses</h2>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:46px;">
+    <div style="border:2px solid var(--stroke); background:var(--surface-card); border-radius:12px; padding:18px 20px; transform:rotate(-.4deg);">
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--accent-ink); margin-bottom:6px;">STAC &gt; FTP</div>
+      <p style="margin:0; font:300 14.5px/1.55 var(--font-body); color:var(--ink-700);">FTP makes you know the filename in advance. STAC lets you query by geometry and date — the catalog does the indexing, not a folder-naming convention.</p>
+    </div>
+    <div style="border:2px solid var(--stroke); background:var(--surface-card); border-radius:12px; padding:18px 20px; transform:rotate(.4deg);">
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--accent-ink); margin-bottom:6px;">Xarray &gt; GDAL scripts</div>
+      <p style="margin:0; font:300 14.5px/1.55 var(--font-body); color:var(--ink-700);">Hand-rolled GDAL loops force you to track tiling and reprojection yourself. Xarray gives labeled, lazy N-D arrays — Dask handles the chunking underneath.</p>
+    </div>
+    <div style="border:2px solid var(--stroke); background:var(--surface-card); border-radius:12px; padding:18px 20px; transform:rotate(-.3deg);">
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--accent-ink); margin-bottom:6px;">Embeddings &gt; NDVI</div>
+      <p style="margin:0; font:300 14.5px/1.55 var(--font-body); color:var(--ink-700);">A hand-picked index like NDVI throws away everything it wasn't designed to see. A foundation-model embedding keeps the full spectral-temporal signal for later causal work.</p>
+    </div>
+  </div>
+
+  <div style="background:#221F1A; border-radius:12px; padding:22px 26px; margin-bottom:46px; box-shadow:2px 3px 0 rgba(34,31,26,.14); overflow-x:auto;">
+    <div style="font:500 11px 'Fira Code',monospace; letter-spacing:.6px; color:#8a8478; margin-bottom:14px;"># THE MODERN EO STACK · LAZY-LOADED FM INFERENCE</div>
+    <pre style="margin:0; font:400 14px/1.7 'Fira Code',monospace; color:#eae5d8; white-space:pre;"><span style="color:#7fa8d9"># 1. SpatioTemporal Discovery</span>
+catalog = pystac_client.Client.open(<span style="color:#a8d9b8">"https://landsatlook.usgs.gov/stac-browser"</span>)
+items = catalog.search(bbox=[...], datetime=<span style="color:#a8d9b8">"2000/2025"</span>,
+                        collections=[<span style="color:#a8d9b8">"landsat-c2-l2"</span>]).item_collection()
+
+<span style="color:#7fa8d9"># 2. Lazy "data cube" construction</span>
+<span style="color:#7fa8d9"># No data is read until .compute() is called</span>
+cube = stackstac.stack(items, epsg=<span style="color:#f6a5a5">4326</span>, resolution=<span style="color:#f6a5a5">30</span>, chunksize=<span style="color:#f6a5a5">2048</span>)
+
+<span style="color:#7fa8d9"># 3. Distributed inference (foundation model)</span>
+embeddings = cube.groupby(<span style="color:#a8d9b8">"time"</span>).map(<span style="color:#e39bb3">lambda</span> x: fm_encoder.predict(x))
+
+<span style="color:#7fa8d9"># 4. Serialize to columnar feature store</span>
+embeddings.to_geoparquet(<span style="color:#a8d9b8">"planetary_archive.parquet"</span>, compression=<span style="color:#a8d9b8">"snappy"</span>)</pre>
+  </div>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Performance" doodle="✦" hint-size="100%,50px"></x-import>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:30px 0 16px;">What lazy execution buys</h2>
+  <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-bottom:46px;">
+    <div class="pd-tip" style="border:2px solid var(--stroke); background:var(--hi-mint); border-radius:12px; padding:16px 18px; transform:rotate(-.5deg);">
+      <div style="font:500 34px 'Fira Code',monospace; color:var(--ink-900);">↓40%</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">END-TO-END LATENCY, STAC + LAZY CUBE VS FTP + EAGER LOAD</div>
+      <span class="pd-tip-pop">Time from query to analysis-ready cube, comparing the STAC/Dask pipeline against a script that resolves and downloads full scenes before processing.</span>
+    </div>
+    <div class="pd-tip" style="border:2px solid var(--stroke); background:var(--accent-soft); border-radius:12px; padding:16px 18px; transform:rotate(.4deg);">
+      <div style="font:500 34px 'Fira Code',monospace; color:var(--ink-900);">100%</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">REPRODUCIBLE RE-RUNS · SAME TASK GRAPH, ANY MACHINE</div>
+      <span class="pd-tip-pop">The Dask task graph is a declarative recipe, not a sequence of manual steps — the same graph re-executes identically on a laptop or a cluster.</span>
+    </div>
+  </div>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="The why" doodle="✦" hint-size="100%,50px"></x-import>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:30px 0 8px;">Engineering for causal truth</h2>
+  <p style="font:300 19px/1.6 var(--font-body); color:var(--ink-600); max-width:720px; margin:0 0 20px;">None of this pipeline is the finding — it's the precondition for one. A synthetic-control estimate is only as trustworthy as the embeddings it matches donors on.</p>
+
+  <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; padding:26px 30px; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+    <p style="font:300 18px/1.62 var(--font-body); color:var(--ink-600); margin:0;">A hand-picked index compresses reality before a causal model ever sees it, hiding the confounders it can't represent. A high-fidelity embedding, computed at planetary scale and re-derivable on demand, is what makes a downstream causal estimate defensible rather than convenient.</p>
+  </div>
+
+</dc-import>
+</x-dc>
+</body>
+</html>

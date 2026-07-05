@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/colors.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/typography.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/effects.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/animation.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/tokens/base.css">
+<link rel="stylesheet" href="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/styles.css">
+<script src="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background-color: var(--paper-100);
+    background-image: var(--paper-grain);
+    color: var(--ink-800);
+    font: var(--text-default);
+    -webkit-font-smoothing: antialiased;
+  }
+  .lj-node { opacity: .18; transform: translateY(46px); filter: blur(1.2px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out), filter .8s var(--ease-out); }
+  .lj-node.lj-in { opacity: 1; transform: none; filter: none; }
+  .lj-drawer { max-height: 0; overflow: hidden; transition: max-height .5s var(--ease-in-out); }
+  .lj-drawer.lj-open { max-height: 520px; }
+  .lj-jump { color: var(--ink-600); text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; }
+  .lj-jump:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
+  .lj-quirk-pop { opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .28s var(--ease-out), transform .28s var(--ease-out); }
+  .lj-quirk:hover .lj-quirk-pop { opacity: 1; transform: translateY(0); }
+  .lj-pin { transition: transform .2s var(--ease-doodle); }
+  .lj-pin:hover { transform: scale(1.18) rotate(-4deg); }
+  @keyframes lj-aura { to { transform: rotate(360deg); } }
+  @keyframes lj-blink { 50% { opacity: 0; } }
+  .lj-cursor { animation: lj-blink 1s step-end infinite; }
+  input[type=range].lj-range { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:var(--ink-300); border-radius:980px; outline:none; }
+  input[type=range].lj-range::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke); cursor:pointer; box-shadow:1px 2px 0 rgba(34,31,26,.2); }
+  input[type=range].lj-range::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke); cursor:pointer; }
+  .lj-greenbox { transition: background .25s var(--ease-out), color .25s var(--ease-out), border-color .25s var(--ease-out); }
+  .lj-greenbox:hover { background: var(--accent-ink) !important; border-color: var(--accent-ink) !important; }
+  .lj-greenbox:hover, .lj-greenbox:hover * { color: var(--paper-50) !important; }
+  /* "See project" buttons (secondary + ghost variants): light green → dark green on hover */
+  .pd-btn--secondary, .pd-btn--ghost { background: var(--hi-mint) !important; color: var(--ink-900) !important; border-color: var(--stroke) !important; transition: background .25s var(--ease-out), color .25s var(--ease-out), border-color .25s var(--ease-out) !important; }
+  .pd-btn--secondary:hover, .pd-btn--ghost:hover { background: var(--accent-ink) !important; border-color: var(--accent-ink) !important; }
+  .pd-btn--secondary:hover, .pd-btn--secondary:hover *, .pd-btn--ghost:hover, .pd-btn--ghost:hover * { color: var(--paper-50) !important; }
+</style>
+</helmet>
+
+<div ref="{{ setThemeRoot }}" style="position:relative; overflow-x:hidden;">
+
+  <nav style="position:fixed; top:0; left:0; right:0; z-index:200; background:rgba(251,246,233,0.82); backdrop-filter:blur(6px); border-bottom:2px solid var(--stroke);">
+    <div style="max-width:1126px; margin:0 auto; padding:12px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <a href="#top" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
+        <span style="display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:2px solid var(--stroke); background:var(--accent-soft); border-radius:38% 62% 63% 37% / 41% 44% 56% 59%; font:var(--fw-bold) 19px var(--font-marker); color:var(--accent-ink); transform:rotate(-4deg); flex-shrink:0;">MT</span>
+        <span style="font-weight:400; font-size:25px; font-family:'Patrick Hand','Comic Sans MS',cursive; color:var(--ink-900); line-height:1; white-space:nowrap;">My Tran</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:16px; font:400 16px var(--font-marker); white-space:nowrap;">
+        <a href="About.dc.html" class="lj-jump">About me</a>
+        <a href="Projects.dc.html" class="lj-jump">Projects</a>
+        <a href="#footer" style="text-decoration:none;">
+          <span style="display:inline-block; padding:7px 16px; border:2px solid var(--stroke); background:var(--paper-50); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; color:var(--ink-900); font:400 16px var(--font-marker); box-shadow:2px 3px 0 rgba(34,31,26,.16); transform:rotate(-1deg);">Say hello</span>
+        </a>
+      </div>
+    </div>
+    <div style="height:3px; background:transparent;">
+      <div ref="{{ setProg }}" style="height:100%; width:0%; background:linear-gradient(90deg, var(--hi-mint), var(--accent), var(--lavender-ink), var(--pen-red));"></div>
+    </div>
+  </nav>
+
+  <!-- self-drawing ink root down the spine -->
+  <svg ref="{{ setRoot }}" viewBox="0 0 240 3600" preserveAspectRatio="xMidYMin meet" aria-hidden="true" style="position: absolute; top: 970px; left: 50%; transform: translateX(-50%); width: 240px; height: 3520px; z-index: 0; pointer-events: none; opacity: .55">
+    <defs>
+      <linearGradient id="ljroot" x1="0" y1="0" x2="0" y2="1">
+        <stop ref="{{ setStop1 }}" offset="0%" stop-color="#34613C"></stop>
+        <stop ref="{{ setStop2 }}" offset="45%" stop-color="#BFE3C2"></stop>
+        <stop ref="{{ setStop3 }}" offset="75%" stop-color="#BFE3C2"></stop>
+        <stop ref="{{ setStop4 }}" offset="100%" stop-color="#F6DE71"></stop>
+      </linearGradient>
+    </defs>
+    <path ref="{{ setRootPath }}" d="M120 0 C 150 220, 90 360, 120 560 S 170 900, 110 1120 S 60 1500, 120 1720 S 180 2120, 110 2360 S 70 2760, 120 3000 S 150 3360, 120 3600" fill="none" stroke="url(#ljroot)" stroke-width="4" stroke-linecap="round"></path>
+    <path d="M120 560 C 80 600, 40 590, 8 560" fill="none" stroke="url(#ljroot)" stroke-width="2.5" stroke-linecap="round" opacity=".7"></path>
+    <path d="M110 1120 C 160 1160, 200 1150, 232 1120" fill="none" stroke="url(#ljroot)" stroke-width="2.5" stroke-linecap="round" opacity=".7"></path>
+    <path d="M120 1720 C 80 1770, 44 1760, 14 1730" fill="none" stroke="url(#ljroot)" stroke-width="2.5" stroke-linecap="round" opacity=".7"></path>
+    <path d="M110 2360 C 160 2410, 198 2400, 228 2372" fill="none" stroke="url(#ljroot)" stroke-width="2.5" stroke-linecap="round" opacity=".7"></path>
+    <path d="M120 3000 C 82 3050, 46 3040, 16 3012" fill="none" stroke="url(#ljroot)" stroke-width="2.5" stroke-linecap="round" opacity=".7"></path>
+  </svg>
+
+  <a id="top"></a>
+
+  <!-- ============ HERO ============ -->
+  <header data-screen-label="Hero" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:120px 28px 90px;">
+    <div ref="{{ setCanopy }}" style="position:absolute; inset:170px 8px auto 8px; height:60%; background-image:url('assets/background.png'); background-size:cover; background-position:center; border:2px solid var(--stroke); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; opacity:0; transition:opacity .6s var(--ease-out); z-index:-1; filter:saturate(.85) sepia(.12);"></div>
+
+    <div style="display:flex; justify-content:flex-end; gap:8px; align-items:center; margin-bottom:22px;">
+      
+      
+    </div><div style="display:grid; grid-template-columns:5fr 7fr; gap:60px; align-items:center; min-height:74vh;">
+    <div style="position:relative;">
+      <div style="position:absolute; inset:-26px; border-radius:50%; border:2px dashed var(--hi-mint); animation:lj-aura 26s linear infinite;"></div>
+      <div style="position:absolute; inset:-14px; border-radius:50%; border:2px dashed var(--accent); opacity:.5; animation:lj-aura 34s linear infinite reverse;"></div>
+      <div style="position:relative; aspect-ratio:1; border-radius:50%; overflow:hidden; border:5px solid var(--paper-50); box-shadow:2px 3px 0 var(--stroke), 0 12px 30px -12px rgba(34,31,26,.5);">
+        
+      <img src="assets/profile.png" alt="My Tran" style="width:100%; height:100%; object-fit:cover;"></div>
+      <div style="position:absolute; bottom:6px; left:-14px; transform:rotate(-6deg);">
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="mint" hint-size="auto,32px">Jeju-do, 2024</x-import>
+      </div>
+    </div>
+
+    <div>
+      
+      <h1 style="margin:0 0 40px; font-weight:400; font-size:58px; line-height:1.4; font-family:'Patrick Hand','Comic Sans MS',cursive; font-style:normal; color:var(--ink-900); position:static; width:100%; height:100%; display:block;">
+        Earth Observation Engineer for
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Highlight" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="yellow" hint-size="auto,auto" style="font-family: Lora; font-style: normal">climate impact.</x-import>
+      </h1>
+      
+      <p style="margin: 0 0 18px; max-width: 560px; font: 300 21px/1.6 var(--font-body); color: var(--ink-600); font-family: Lora; font-size: 16px; width: 546px; height: 104px">I build scalable Earth observation pipelines that turn decades of satellite imagery into consistent environmental measurements, enabling organizations to measure the impact of climate interventions at scales where field monitoring isn't feasible.</p>
+      <p style="margin: 0 0 26px; max-width: 800px; font: 500 14px var(--font-marker); letter-spacing: .3px; color: var(--ink-500); width: 600px">20+ years of satellite imagery <b>·</b> 5 countries <b>·</b> Agriculture <b>·</b> Wildfire <b>·</b> Renewable Energy · Urban Planning</p><div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:30px;">
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Badge" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" tone="blue" hint-size="auto,28px" style="font-family: 'Patrick Hand', Comic Sans, MS">Remote Sensing</x-import>
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Badge" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" tone="lavender" hint-size="auto,28px" style="font-family: 'Patrick Hand'">GeoAI pipelines</x-import>
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Badge" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" tone="red" hint-size="auto,28px" style="font-family: 'Patrick Hand'">Environmental Impact Evaluation</x-import>
+      </div>
+      <a href="#seed" style="text-decoration:none;">
+        <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="primary" size="lg" hint-size="auto,54px" style="font-family: 'Patrick Hand'">Follow the journey  ↓</x-import>
+      </a>
+    </div>
+    </div>
+
+    
+  </header>
+
+  <div id="seed"></div>
+  <div style="max-width:1126px; margin:0 auto; padding:0 28px;">
+    <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="wavy" label="The living journey" doodle="✦" hint-size="100%,60px"></x-import>
+  </div>
+
+  <div id="nodes"></div>
+
+  <!-- ============ NODE 1 — THE SEED ============ -->
+  <section class="lj-node" ref="{{ setNode }}" data-screen-label="Node 1 — The Seed" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:70px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:8px;">The seed</div>
+        <blockquote style="margin:0 0 24px; font:400 33px/1.2 var(--font-marker); color:var(--ink-900);">"Tech starts with a conversation."</blockquote>
+        <p style="margin: 0 0 20px; font: 300 19px/1.6 var(--font-body); color: var(--ink-600); font-family: Lora; font-size: 15px">Before a single band of imagery is loaded, there is a person on the other side of the data. My questions took root in rice paddies and grew through front-line interviews across six countries — ecologists, farmers, firefighters, families.</p>
+        <div class="lj-quirk" style="position:relative; display:inline-block; margin-bottom:22px;">
+          
+          
+        </div>
+        
+      </div>
+
+      <div style="position:relative; background:var(--surface-card); border:2px solid var(--stroke); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; box-shadow:2px 3px 0 rgba(34,31,26,.16); padding:22px; transform:rotate(.5deg); background-image:repeating-linear-gradient(0deg, transparent 0 27px, rgba(140,130,112,.12) 27px 28px);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font:400 18px var(--font-marker); color:var(--ink-800);">Learning across 5 countries</span>
+          <span style="font:500 12px 'Fira Code',monospace; color:var(--ink-400);">click a pin →</span>
+        </div>
+        <div style="position:relative; height:300px; border:2px dashed var(--ink-300); border-radius:14px; background:var(--paper-200); overflow:hidden;">
+          <svg viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%;">
+            <g stroke="var(--ink-100)" stroke-width="1" stroke-dasharray="4 6">
+              <line x1="0" y1="125" x2="1000" y2="125"></line>
+              <line x1="0" y1="250" x2="1000" y2="250"></line>
+              <line x1="0" y1="375" x2="1000" y2="375"></line>
+              <line x1="250" y1="0" x2="250" y2="500"></line>
+              <line x1="500" y1="0" x2="500" y2="500"></line>
+              <line x1="750" y1="0" x2="750" y2="500"></line>
+            </g>
+            <g fill="var(--hi-mint)" stroke="var(--ink-400)" stroke-width="1.4" stroke-linejoin="round" opacity="0.92">
+              <polygon points="33,60 83,50 236,45 333,18 356,75 278,125 231,160 208,167 194,164 167,156 153,117 111,83 42,83"></polygon>
+              <polygon points="278,222 333,228 403,264 389,314 347,347 319,403 300,397 306,361 292,292 272,250"></polygon>
+              <polygon points="472,150 486,128 500,108 528,100 578,139 611,119 611,83 583,56 528,53 478,83 472,111"></polygon>
+              <polygon points="453,161 500,147 533,156 597,161 619,217 642,222 633,283 597,319 556,347 533,267 522,239 472,233 453,194"></polygon>
+              <polygon points="583,125 667,83 778,50 917,56 972,83 931,117 889,153 839,161 800,217 764,231 756,194 717,228 689,183 653,172 625,153 592,133"></polygon>
+              <polygon points="811,283 861,281 903,292 925,319 911,356 875,356 833,342 817,311"></polygon>
+            </g>
+          </svg>
+          {{ countryPins }}
+        </div>
+        <div ref="{{ setCountryNote }}" style="margin-top: 12px; min-height: 56px; padding: 12px 14px; border: 2px solid var(--stroke); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; background: var(--paper-50); font: 300 16px/1.45 var(--font-body); color: var(--ink-700); font-family: 'Patrick Hand'">{{ countryNote }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NODE 2 — THE VISION ============ -->
+  <section class="lj-node" ref="{{ setNode }}" data-screen-label="Node 2 — The Vision" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:70px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:8px;">The vision</div>
+        <blockquote style="margin:0 0 24px; font-weight:400; font-size:33px; line-height:1.2; font-family:'Patrick Hand','Comic Sans MS',cursive; color:var(--ink-900);">"How do we see the invisible?"</blockquote>
+        <p style="margin: 0 0 18px; font: 300 19px/1.6 var(--font-body); color: var(--ink-600); font-family: Lora; font-size: 15px">A satellite sees 13 spectral bands where the eye sees three. The work is teaching a model to read semantic environmental structure out of that invisible spectrum.</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:20px;">
+          
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">PyTorch</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">TensorFlow</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">Sentinel-2</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">U-Net</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">ViT</span>
+        </div>
+        <div>
+          
+          <div class="lj-drawer" ref="{{ setDrawer2 }}">
+            <p style="margin:14px 0 0; padding:16px; border-left:2px dashed var(--ink-400); font:300 17px/1.62 var(--font-body); color:var(--ink-600);">How do we teach a computer to see what an ecologist sees? We moved beyond pixel-wise classification because standard CNNs lost spatial continuity across cloud shadows — forcing a pivot toward multi-spectral U-Net segmentation that preserves shape and edge, then validating against hand-labelled masks.</p>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <a href="project-measure.dc.html" style="text-decoration:none;">
+            <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="secondary" size="md" hint-size="auto,44px" style="font-family: 'Patrick Hand'">See project  →</x-import>
+          </a>
+        </div>
+      </div>
+
+      <div style="position:relative; background:var(--surface-card); border:2px solid var(--stroke); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; box-shadow:2px 3px 0 rgba(34,31,26,.16); padding:20px; transform:rotate(-.6deg);">
+        <h3 style="margin:0 0 12px; font:400 19px/1.35 var(--font-marker); color:var(--ink-900);">Satellite vision for urban policy</h3>
+        <div style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;">
+          {{ spectralTabs }}
+        </div>
+        <div style="position:relative; aspect-ratio:4/3; border:2px solid var(--stroke); border-radius:12px; overflow:hidden; background:var(--ink-900);">
+          <img ref="{{ setSpectral }}" src="assets/Seoul_vegetation.jpg" alt="spectral view" style="width:100%; height:100%; object-fit:cover; transition:filter .4s;">
+          <div ref="{{ setUnet }}" style="position:absolute; inset:0; opacity:0; transition:opacity .4s; background:url('assets/vit_embeddings_attention.png') center/cover; mix-blend-mode:screen;"></div>
+          <div ref="{{ setSpectralCap }}" style="position:absolute; left:12px; bottom:12px; padding:5px 12px; background:rgba(34,31,26,.82); color:var(--paper-50); border-radius:8px; font:500 13px 'Fira Code',monospace;">{{ spectralCaption }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NODE 3 — THE MAP ============ -->
+  <section class="lj-node" ref="{{ setNode }}" data-screen-label="Node 3 — The Map" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:70px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:8px;">The map</div>
+        <blockquote style="margin:0 0 24px; font:400 33px/1.2 var(--font-marker); color:var(--ink-900);">"Where does intervention matter most?"</blockquote>
+        
+        <p style="margin: 0 0 18px; font: 300 19px/1.6 var(--font-body); color: var(--ink-600); font-size: 15px; font-family: Lora">While the 'Vision' tells us what is happening, the 'Map' tells us where to act. I build spatial engines that transforms coarse climate data into pixel-level suitability maps that pinpoint exactly where biophysical signatures align for the highest spatial return on investment. <i>Drag the dials to model where shifting to AWD irrigation can reduce water use by<b> 60% </b>and methane emissions by <b>24%</b></i><b>.</b></p><div style="display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:20px;">
+          
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">Google Earth Engine</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">Rasterio</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">Xarray</span>
+          <span style="padding: 4px 11px; border: 1.5px solid var(--stroke); border-radius: 980px; font: 500 12.5px 'Fira Code',monospace; color: var(--ink-700)">GeoPandas</span>
+        </div>
+        <div>
+          
+          <div class="lj-drawer" ref="{{ setDrawer3 }}">
+            <p style="margin:14px 0 0; padding:16px; border-left:2px dashed var(--ink-400); font:300 17px/1.62 var(--font-body); color:var(--ink-600);">A water-saving policy that works in the Mekong isn't automatically portable. We built a water-balance suitability model over hydrological index and topographic slope — because fragmented, sloped terrain quietly breaks the assumptions that made AWD succeed at home.</p>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <a href="project-transfer.dc.html" style="text-decoration:none;">
+            <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="secondary" size="md" hint-size="auto,44px" style="font-family: 'Patrick Hand'">See project  →</x-import>
+          </a>
+        </div>
+      </div>
+
+      <div style="position:relative; background:var(--surface-card); border:2px solid var(--stroke); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; box-shadow:2px 3px 0 rgba(34,31,26,.16); padding:22px; transform:rotate(.5deg);">
+        <h3 style="margin:0 0 6px; font:400 19px/1.35 var(--font-marker); color:var(--ink-900);">Geospatial suitability modeling of water-saving AWD irrigation in Japan</h3>
+        
+        <span style="font:500 12px 'Fira Code',monospace; color:var(--ink-400);">Drag the slider →</span><div style="display:grid; grid-template-columns:1.1fr 1fr; gap:18px; align-items:center;">
+          <div>
+            <div style="margin-bottom:18px;">
+              <div style="display:flex; justify-content:space-between; font:500 14px 'Fira Code',monospace; color:var(--ink-600); margin-bottom:6px;"><span>HYDRO INDEX</span><span ref="{{ setHydroVal }}" style="color:var(--accent-ink);">{{ hydroVal }}</span></div>
+              <input type="range" min="0" max="100" value="55" class="lj-range" onInput="{{ onHydro }}">
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; font:500 14px 'Fira Code',monospace; color:var(--ink-600); margin-bottom:6px;"><span>SLOPE °</span><span ref="{{ setSlopeVal }}" style="color:var(--accent-ink);">{{ slopeVal }}</span></div>
+              <input type="range" min="0" max="15" value="4" class="lj-range" onInput="{{ onSlope }}">
+            </div>
+            <div style="margin-top:20px; display:flex; flex-direction:column; gap:12px;">
+              <div class="lj-greenbox" style="border:2px solid var(--stroke); border-radius:12px; padding:10px 14px; background:var(--hi-mint);">
+                <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">WATER SAVINGS</div>
+                <div ref="{{ setWater }}" style="font:500 30px 'Fira Code',monospace; color:var(--ink-900);">{{ waterVal }}</div>
+              </div>
+              <div class="lj-greenbox" style="border:2px solid var(--stroke); border-radius:12px; padding:10px 14px; background:var(--accent-soft);">
+                <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">METHANE ↓</div>
+                <div ref="{{ setMethane }}" style="font:500 30px 'Fira Code',monospace; color:var(--ink-900);">{{ methaneVal }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:relative; border:2px solid var(--stroke); border-radius:12px; overflow:hidden; aspect-ratio:3/4; background:var(--paper-200);">
+            <img src="assets/Japan_suitability.png" alt="Japan suitability" style="width:100%; height:100%; object-fit:cover;">
+            <div ref="{{ setFeasible }}" style="position:absolute; left:8px; bottom:8px; right:8px; text-align:center; padding:4px; background:rgba(34,31,26,.82); color:var(--hi-mint); border-radius:8px; font:500 13px 'Fira Code',monospace;">{{ feasibleVal }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NODE 4 — THE ENGINEER ============ -->
+  <section class="lj-node" ref="{{ setNode }}" data-screen-label="Node 4 — The Engineer" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:70px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:8px;">The engineer</div>
+        <blockquote style="margin:0 0 24px; font:400 33px/1.2 var(--font-marker); color:var(--ink-900);">"Standardizing the chaos of Earth’s history."</blockquote>
+        <p style="margin: 0 0 18px; font: 300 19px/1.6 var(--font-body); color: var(--ink-600); font-size: 15px; font-family: Lora">I bridge the gap between raw satellite imagery and decision-ready insights by architecting cloud-native geospatial pipelines. My work spans from implementing STAC-based discovery for cloud-optimized storage (AWS S3), leveraging parallel Xarray/Dask for scalable compute, to utilizing GeoParquet for columnar serialization of satellite embeddings. I don't just process data; I engineer the infrastructure that makes 25 years of planetary change accessible, reproducible, and ready for model-scale inference.</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:20px;">
+          
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">AWS S3</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">STAC</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">Dask</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">Xarray</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">HPC (TACC)</span>
+        </div>
+        <div>
+          
+          <div class="lj-drawer" ref="{{ setDrawer4 }}">
+            <p style="margin:14px 0 0; padding:16px; border-left:2px dashed var(--ink-400); font:300 17px/1.62 var(--font-body); color:var(--ink-600);">Why out-of-core Dask chunking over standard in-memory arrays? Because a 25-year Landsat archive silently exceeds RAM and the naïve pipeline dies at the memory boundary. Lazy, chunked graphs let the same laptop reason over continental extents.</p>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <a href="project-hpc.dc.html" style="text-decoration:none;">
+            <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="ghost" size="md" hint-size="auto,44px">See project  →</x-import>
+          </a>
+        </div>
+      </div>
+
+      <div style="transform:rotate(-.6deg);">
+        <h3 style="margin:0 0 20px; font:400 19px/1.35 var(--font-marker); color:var(--ink-900);">The Data Cube: scaling foundation model inference to 1M km²</h3>
+        <div style="position:relative;">
+          <div style="position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(2deg); z-index:2;">
+            <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="blue" hint-size="auto,30px">dask-scheduler</x-import>
+          </div>
+        <div style="border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.16); background:#1A1712;">
+          <div style="display:flex; align-items:center; gap:7px; padding:9px 14px; background:#221F1A; border-bottom:1px solid #3a352c;">
+            <span style="width:11px; height:11px; border-radius:50%; background:#CB4536;"></span>
+            <span style="width:11px; height:11px; border-radius:50%; background:#EFCF3F;"></span>
+            <span style="width:11px; height:11px; border-radius:50%; background:#1F8A5B;"></span>
+            <span style="margin-left:8px; font:500 12px 'Fira Code',monospace; color:#8C8270;">hpc-stream — dask</span>
+          </div>
+          <div ref="{{ setTerm }}" style="height:270px; overflow:hidden; padding:14px; font:400 13px/1.5 'Fira Code',monospace; color:#d8cfae; background:#1A1712;">{{ termLines }}</div>
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#221F1A; border-top:1px solid #3a352c;">
+            <div style="font:500 12px 'Fira Code',monospace; color:#8C8270;">rows: <span ref="{{ setRows }}" style="color:#8fd0a6;">{{ rowsVal }}</span> · progress <span ref="{{ setPct }}" style="color:#8fb6e6;">{{ pctVal }}</span></div>
+            <button onClick="{{ runHPC }}" style="cursor:pointer; padding:5px 14px; border:1px solid #4a4436; background:#2b2620; color:#d8cfae; border-radius:6px; font:500 12px 'Fira Code',monospace;">▶ run</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NODE 5 — THE TRUTH ============ -->
+  <section class="lj-node" ref="{{ setNode }}" data-screen-label="Node 5 — The Truth" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:70px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:8px;">The truth</div>
+        <blockquote style="margin:0 0 24px; font:400 33px/1.2 var(--font-marker); color:var(--ink-900);">"What is the causal impact of our interventions?"</blockquote>
+        <p style="margin: 0 0 18px; font: 300 19px/1.6 var(--font-body); color: var(--ink-600); font-family: Lora; font-size: 15px">I bridge the frontline research between GeoAI and Causal Inference to solve the problem of unseen counterfactual. I use&nbsp;<span style="letter-spacing: 0.2px;">Foundation Model embeddings</span>&nbsp;to identify ecologically identical 'digital twins,' allowing me to isolate the true causal effect of environmental interventions from the background noise of climate variability. I don't just ask 'What changed?', I ask 'Why did it change, and was our intervention the reason?'</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:20px;">
+          
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">AlphaEarth</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">CausalImagesR</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">Landsat</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">PyTorch</span>
+        </div>
+        <div>
+          
+          <div class="lj-drawer" ref="{{ setDrawer5 }}">
+            
+          <p style="margin:14px 0 0; padding:16px; border-left:2px dashed var(--ink-400); font:300 17px/1.62 var(--font-body); color:var(--ink-600);">Satellite embeddings (AlphaEarth) let us pick donor regions that are physically similar, not just statistically convenient. Embedding-matched controls cut pre-treatment error by 49% — so the residual gap reflects the policy, not the noise.</p></div>
+        </div>
+        <div style="margin-top:22px;">
+          <a href="project-infer.dc.html" style="text-decoration:none;">
+            <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="secondary" size="md" hint-size="auto,44px" style="font-family: 'Patrick Hand'">See project  →</x-import>
+          </a>
+        </div>
+      </div>
+
+      <div style="position:relative; background:var(--surface-card); border:2px solid var(--stroke); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; box-shadow:2px 3px 0 rgba(34,31,26,.16); padding:22px; transform:rotate(.5deg);">
+        <h3 style="margin:0 0 12px; font:400 19px/1.35 var(--font-marker); color:var(--ink-900);">Satellite-based Causal Inference: Application in Wildfire Risk Impact Evaluation</h3>
+        <div style="display:flex; gap:6px; margin-bottom:14px;">
+          {{ causalTabs }}
+        </div>
+        {{ causalChart }}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NODE 6 — THE RESPONSE ============ -->
+  <section class="lj-node" ref="{{ setNode }}" data-screen-label="Node 6 — The Response" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:70px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font:500 14px var(--font-marker); letter-spacing:1.6px; text-transform:uppercase; color:var(--accent-ink); margin-bottom:8px;">The Community</div>
+        <blockquote style="margin:0 0 24px; font:400 33px/1.2 var(--font-marker); color:var(--ink-900);">"Bringing it back to the community."</blockquote>
+        <p style="margin: 0 0 18px; font: 300 19px/1.6 var(--font-body); color: var(--ink-600); font-family: Lora; font-size: 15px">The loop closes when the science reaches the people who act on it. Fuego.Earth delivers sub-minute wildfire simulations to community responders. Click a cell to ignite — watch the wind carry it.</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:20px;">
+          
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">Cell2Fire</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">LANDFIRE</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">FastAPI</span>
+          <span style="padding:4px 11px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700);">React · Mapbox</span>
+        </div>
+        <div>
+          
+          <div class="lj-drawer" ref="{{ setDrawer6 }}">
+            <p style="margin:14px 0 0; padding:16px; border-left:2px dashed var(--ink-400); font:300 17px/1.62 var(--font-body); color:var(--ink-600);">A forecast that arrives after the fire has moved is useless. Vectorising Cell2Fire and streaming topography lets responders re-run scenarios in seconds — turning a research model into a tool someone can hold during an actual event.</p>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <a href="project-fuego.dc.html" style="text-decoration:none;">
+            <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Button" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="ghost" size="md" hint-size="auto,44px" style="font-family: 'Patrick Hand'">See project  →</x-import>
+          </a>
+        </div>
+      </div>
+
+      <div style="position:relative; background:var(--surface-card); border:2px solid var(--stroke); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; box-shadow:2px 3px 0 rgba(34,31,26,.16); padding:22px; transform:rotate(-.5deg);">
+        <h3 style="margin:0 0 14px; font:400 19px/1.35 var(--font-marker); color:var(--ink-900);">Geospatial Data Engineering: Fuego.Earth for near real-time wildfire simulation</h3>
+        <div style="position:relative; border:2px solid var(--stroke); border-radius:12px; overflow:hidden; background:#181410;">
+          <div style="display:flex; align-items:center; gap:9px; padding:10px 14px; background:#221F1A; border-bottom:1.5px solid #3a352c;">
+            <span style="width:9px; height:9px; border-radius:50%; background:#F97316;"></span>
+            <span style="font:500 11px 'Fira Code',monospace; letter-spacing:.4px; color:#c9c2b3;">FUEGO COMMAND — LIVE SIMULATION</span>
+            <span style="margin-left:auto; font:500 10px 'Fira Code',monospace; color:#7fa8d9;">● STREAMING</span>
+          </div>
+          <div style="position:relative; aspect-ratio:16/10; background:radial-gradient(ellipse at 30% 40%, #2a2117 0%, #14110d 70%); display:grid; place-items:center; overflow:hidden;">
+            <video src="assets/fuego-wildfire-sim.mp4" autoplay="" loop="" muted="" playsinline="" style="width:100%; height:100%; object-fit:cover; display:block;"></video>
+            <div style="position:absolute; bottom:12px; left:14px; display:flex; gap:6px;">
+              <span style="padding:4px 10px; border:1px solid #3a352c; border-radius:980px; font:500 10px 'Fira Code',monospace; color:#F97316; background:rgba(249,115,22,0.1);">wind 22kt · E</span>
+            </div>
+            <div style="position:absolute; bottom:12px; right:14px; padding:4px 10px; border:1px solid #3a352c; border-radius:980px; font:500 10px 'Fira Code',monospace; color:#c9e39b; background:rgba(201,227,155,0.1);">60fps</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="max-width:1126px; margin:0 auto; padding:0 28px;">
+    
+  </div>
+
+  <!-- ============ SCHEMATIC CARDS ============ -->
+  <section id="schematics" class="lj-node" ref="{{ setNode }}" data-screen-label="Schematics" style="position:relative; z-index:1; max-width:1126px; margin:0 auto; padding:36px 28px 80px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start;">
+
+      
+
+      
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="footer" data-screen-label="Footer" style="position:relative; z-index:1; background:var(--ink-900); color:var(--paper-100); margin-top:20px; padding:80px 28px 48px;">
+    <div style="max-width:900px; margin:0 auto; text-align:center;">
+      <p style="margin:0 0 10px; font-weight:400; font-size:44px; line-height:1.15; font-family:'Patrick Hand','Comic Sans MS',cursive; font-style:italic; color:var(--paper-50);">Let's build something for the planet.</p>
+      <p style="margin: 0 auto 30px; max-width: 560px; font: 300 19px/1.6 var(--font-body); color: var(--paper-300); font-size: 15px; font-family: Lora">If any of this resonates — a collaboration, a question, or just a good nature documentary to cry over — I'd love to hear from you.</p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:36px;">
+        <a href="mailto:tran@uni.minerva.edu" style="text-decoration: none; padding: 12px 26px; border: 2px solid var(--paper-100); color: var(--ink-900); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; font: 400 18px var(--font-marker); background-color: var(--paper-200)">tran@uni.minerva.edu</a>
+        <a href="https://github.com/MyTran-GitHub" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 12px 22px; border: 2px solid var(--paper-300); color: #221F1A; border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px; font: 400 18px var(--font-marker); background-color: var(--paper-200)">
+          <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="assets/icons.svg#github-icon"></use></svg> GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/mee-tran-34530725b/" target="_blank" rel="noopener" style="text-decoration: none; padding: 12px 22px; border: 2px solid var(--paper-300); color: #221F1A; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; font: 400 18px var(--font-marker); background-color: var(--paper-200)">LinkedIn</a>
+      </div>
+      <a href="#top" style="text-decoration:none; font:400 16px var(--font-marker); color:var(--paper-400);">↑ back to the top</a>
+      <div style="margin-top:26px; font:500 12px 'Fira Code',monospace; color:var(--ink-400);">© 2026 My Tran · Geospatial analytics for climate impact</div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lightGreen&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#BFE3C2&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;,&quot;options&quot;:[&quot;#BFE3C2&quot;,&quot;#CDE8CF&quot;,&quot;#A8D5B0&quot;,&quot;#D6E9C4&quot;]},&quot;darkGreen&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#34613C&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;,&quot;options&quot;:[&quot;#34613C&quot;,&quot;#2C5138&quot;,&quot;#3F6B4A&quot;,&quot;#274A32&quot;]},&quot;highlight&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#F6DE71&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;,&quot;options&quot;:[&quot;#F6DE71&quot;,&quot;#F2D24B&quot;,&quot;#FCE9A0&quot;,&quot;#EFCF3F&quot;]}}">
+class Component extends DCLogic {
+  state = {
+    canopy: false,
+    country: -1,
+    band: 'rgb',
+    hydro: 55, slope: 4,
+    causal: 'both',
+    wind: 'E',
+    fire: new Array(144).fill(0),
+    burning: 0, burnt: 0, tick: 0,
+    rows: 0, pct: 0, running: false,
+    termText: '$ start streaming pipeline…\n',
+    copied: false,
+  };
+
+  COUNTRIES = [
+    { name: 'Vietnam',      x: 79.4, y: 38.3, note: 'The story of climate resilience starts from home, where adaptation begins in every neighborhood through cycles of floods and how agriculture is rooted in our culture.' },
+    { name: 'Japan',        x: 88.0, y: 27.5, note: 'Worked directly with farmers to evaluate the real-world adoption of alternate wetting and drying (AWD) rice cultivation, connecting satellite-based monitoring with on-the-ground agricultural decision-making.' },
+    { name: 'South Korea',  x: 85.3, y: 29.2, note: 'Studied urban heat inequality in dense metropolitan environments, focusing on how spatial data reveals disparities in exposure, infrastructure access, and heat vulnerability across socioeconomic groups.' },
+    { name: 'Germany',      x: 53.7, y: 20.8, note: 'Explored climate policy implementation and evaluation, focusing on how national-level climate strategies translate into measurable outcomes across energy systems, land use, and emissions reduction programs.' },
+    { name: 'USA',          x: 16.0, y: 29.0, note: 'Spanning wildfire response and risk systems, I spoke with firefighters, land managers, and utility professionals to understand how wildfire risk is modeled, simulated, and acted upon. I also examined prescribed burn programs in California and their downstream health impacts.' },
+  ];
+
+  BANDS = {
+    rgb:     { src: 'assets/Seoul_vegetation.jpg', filter: 'none',                                     cap: 'TRUE COLOR · RGB', unet: 0 },
+    nir:     { src: 'assets/Seoul_vegetation.jpg', filter: 'hue-rotate(80deg) saturate(2.4) contrast(1.2)', cap: 'NIR · BAND 8',     unet: 0 },
+    thermal: { src: 'assets/Seoul_LST.jpg',        filter: 'saturate(1.5) contrast(1.15)',            cap: 'THERMAL · LST',    unet: 0 },
+    unet:    { src: 'assets/Seoul_vegetation.jpg', filter: 'grayscale(.6) brightness(.7)',            cap: 'U-NET · SEMANTIC MASK · 95% mIoU', unet: 1 },
+  };
+
+  componentDidMount() {
+    this._onScroll = () => this.handleScroll();
+    window.addEventListener('scroll', this._onScroll, { passive: true, capture: true });
+    this.handleScroll();
+    // reveal nodes
+    this._io = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('lj-in'); this._io.unobserve(e.target); } });
+    }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+    (this._nodes || []).forEach(n => n && this._io.observe(n));
+    this.renderFireStats();
+    this.applyTheme();
+  }
+  componentDidUpdate() { this.applyTheme(); }
+
+  applyTheme() {
+    const lg = this.props.lightGreen || '#BFE3C2';
+    const dg = this.props.darkGreen  || '#34613C';
+    const hl = this.props.highlight  || '#F6DE71';
+    const root = this._themeRoot;
+    if (root) {
+      const set = (k, v) => root.style.setProperty(k, v);
+      // fold the blue / lavender / red accents into one green family
+      set('--accent', dg); set('--accent-ink', dg); set('--accent-soft', lg);
+      set('--hi-mint', lg); set('--lavender-100', lg); set('--lavender-200', lg);
+      set('--lavender-ink', dg);
+      set('--pen-blue', dg); set('--pen-blue-ink', dg); set('--pen-blue-soft', lg);
+      set('--pen-red', dg); set('--pen-red-soft', lg);
+      set('--danger', dg); set('--danger-soft', lg);
+      set('--accent-2', lg); set('--accent-2-ink', dg);
+      // yellow kept for the ultimate highlight
+      set('--hi-yellow', hl); set('--hi-yellow-deep', hl); set('--mark', hl);
+    }
+    if (this._prog) this._prog.style.background = 'linear-gradient(90deg,' + lg + ',' + dg + ',' + hl + ')';
+    if (this._stop1) this._stop1.setAttribute('stop-color', dg);
+    if (this._stop2) this._stop2.setAttribute('stop-color', lg);
+    if (this._stop3) this._stop3.setAttribute('stop-color', lg);
+    if (this._stop4) this._stop4.setAttribute('stop-color', hl);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll, { capture: true });
+    if (this._io) this._io.disconnect();
+    if (this._fireTimer) clearInterval(this._fireTimer);
+    if (this._hpcTimer) clearInterval(this._hpcTimer);
+  }
+
+  handleScroll() {
+    const doc = document.documentElement;
+    const max = (doc.scrollHeight - doc.clientHeight) || 1;
+    const p = Math.min(1, Math.max(0, (window.scrollY || doc.scrollTop) / max));
+    if (this._prog) this._prog.style.width = (p * 100).toFixed(1) + '%';
+    if (this._rootPath) {
+      if (this._rootLen == null) this._rootLen = this._rootPath.getTotalLength();
+      this._rootPath.style.strokeDasharray = this._rootLen;
+      this._rootPath.style.strokeDashoffset = (this._rootLen * (1 - Math.min(1, p * 1.15))).toFixed(1);
+    }
+    // reliable reveal: query live so it never relies on a stale ref list
+    const vh = window.innerHeight || doc.clientHeight;
+    document.querySelectorAll('.lj-node').forEach(n => {
+      if (!n.classList.contains('lj-in') && n.getBoundingClientRect().top < vh * 0.88) {
+        n.classList.add('lj-in');
+      }
+    });
+  }
+
+  // ---- refs ----
+  _nodes = [];
+  setNode = (el) => { if (el && !this._nodes.includes(el)) this._nodes.push(el); };
+  setProg = (el) => this._prog = el;
+  setRoot = (el) => this._root = el;
+  setRootPath = (el) => this._rootPath = el;
+  setCanopy = (el) => this._canopy = el;
+  setSpectral = (el) => this._spectral = el;
+  setUnet = (el) => this._unetEl = el;
+  setSpectralCap = (el) => this._spectralCap = el;
+  setHydroVal = (el) => this._hydroEl = el;
+  setSlopeVal = (el) => this._slopeEl = el;
+  setWater = (el) => this._waterEl = el;
+  setMethane = (el) => this._methaneEl = el;
+  setFeasible = (el) => this._feasibleEl = el;
+  setCountryNote = (el) => this._noteEl = el;
+  setTerm = (el) => this._termEl = el;
+  setRows = (el) => this._rowsEl = el;
+  setPct = (el) => this._pctEl = el;
+  setBurning = (el) => this._burningEl = el;
+  setBurnt = (el) => this._burntEl = el;
+  setThemeRoot = (el) => { this._themeRoot = el; this.applyTheme(); };
+  setStop1 = (el) => { this._stop1 = el; };
+  setStop2 = (el) => { this._stop2 = el; };
+  setStop3 = (el) => { this._stop3 = el; };
+  setStop4 = (el) => { this._stop4 = el; };
+  drawers = {};
+  mkDrawerRef = (n) => (el) => { this.drawers[n] = el; };
+
+  toggleCanopy = () => {
+    const v = !this.state.canopy;
+    this.setState({ canopy: v });
+    if (this._canopy) this._canopy.style.opacity = v ? '0.5' : '0';
+  };
+
+  toggleDrawer = (n) => {
+    const el = this.drawers[n];
+    if (el) el.classList.toggle('lj-open');
+    this.setState(s => ({ ['d' + n]: !s['d' + n] }));
+  };
+  toggleDrawer1 = () => this.toggleDrawer(1);
+  toggleDrawer2 = () => this.toggleDrawer(2);
+  toggleDrawer3 = () => this.toggleDrawer(3);
+  toggleDrawer4 = () => this.toggleDrawer(4);
+  toggleDrawer5 = () => this.toggleDrawer(5);
+  toggleDrawer6 = () => this.toggleDrawer(6);
+
+  selectCountry = (i) => {
+    this.setState({ country: i });
+    if (this._noteEl) this._noteEl.textContent = this.COUNTRIES[i].note;
+  };
+
+  setBand = (b) => {
+    this.setState({ band: b });
+    const cfg = this.BANDS[b];
+    if (this._spectral) { this._spectral.src = cfg.src; this._spectral.style.filter = cfg.filter; }
+    if (this._unetEl) this._unetEl.style.opacity = cfg.unet ? '0.85' : '0';
+    if (this._spectralCap) this._spectralCap.textContent = cfg.cap;
+    this.forceUpdate();
+  };
+
+  compute3() {
+    const { hydro, slope } = this.state;
+    const water = Math.round(Math.max(0, (hydro / 100) * 60 * (1 - slope / 22)));
+    const methane = Math.round(Math.max(0, (hydro / 100) * 24 * (1 - slope / 26)));
+    const feasible = Math.round(Math.max(4, (hydro / 100) * 42 * (1 - slope / 18)));
+    return { water, methane, feasible };
+  }
+  onHydro = (e) => { this.state.hydro = +e.target.value; this.pushSlider(); };
+  onSlope = (e) => { this.state.slope = +e.target.value; this.pushSlider(); };
+  pushSlider() {
+    const { water, methane, feasible } = this.compute3();
+    if (this._hydroEl) this._hydroEl.textContent = this.state.hydro;
+    if (this._slopeEl) this._slopeEl.textContent = this.state.slope;
+    if (this._waterEl) this._waterEl.textContent = water + '%';
+    if (this._methaneEl) this._methaneEl.textContent = methane + '%';
+    if (this._feasibleEl) this._feasibleEl.textContent = 'FEASIBLE PADDIES ' + feasible + '%';
+  }
+
+  setCausal = (v) => { this.setState({ causal: v }); };
+
+  // ---- HPC terminal ----
+  HPC_LINES = [
+    'import dask.array as da; import duckdb',
+    'client = Client(n_workers=8, threads_per_worker=2)',
+    'ds = open_landsat("1985-2010", bbox=VN, chunks=(1,2048,2048))',
+    'graph: 12,480 tasks · 1,000,000 km² · out-of-core',
+    'rechunk → normalize → cloud_mask → composite',
+    'duckdb: registered 812 scene metadata rows',
+    'streaming block 1/64  ▓░░░░░░░░  spill=0',
+    'streaming block 18/64 ▓▓▓░░░░░░  spill=0',
+    'streaming block 37/64 ▓▓▓▓▓░░░░  spill=0',
+    'streaming block 55/64 ▓▓▓▓▓▓▓░░  spill=0',
+    'streaming block 64/64 ▓▓▓▓▓▓▓▓  done',
+    'wrote analysis-ready cube → duckdb (no OOM)',
+    '✓ pipeline complete · peak RAM 3.9GB / budget 4GB',
+  ];
+  runHPC = () => {
+    if (this._hpcTimer) clearInterval(this._hpcTimer);
+    let i = 0, rows = 0;
+    if (this._termEl) this._termEl.textContent = '$ python stream_pipeline.py\n';
+    this._hpcTimer = setInterval(() => {
+      if (i >= this.HPC_LINES.length) {
+        clearInterval(this._hpcTimer);
+        if (this._pctEl) this._pctEl.textContent = '100%';
+        return;
+      }
+      if (this._termEl) {
+        this._termEl.textContent += '› ' + this.HPC_LINES[i] + '\n';
+        this._termEl.scrollTop = this._termEl.scrollHeight;
+      }
+      rows += Math.round(40000 + Math.random() * 90000);
+      const pct = Math.round(((i + 1) / this.HPC_LINES.length) * 100);
+      if (this._rowsEl) this._rowsEl.textContent = rows.toLocaleString();
+      if (this._pctEl) this._pctEl.textContent = pct + '%';
+      i++;
+    }, 420);
+  };
+
+  // ---- fire sim ----
+  COLS = 16; ROWS = 9;
+  igniteCell = (i) => {
+    const fire = this.state.fire.slice();
+    if (fire[i] === 0) fire[i] = 1;
+    this.setState({ fire }, () => this.renderFireStats());
+    this.startFire();
+  };
+  startFire() {
+    if (this._fireTimer) return;
+    this._fireTimer = setInterval(() => this.tickFire(), 480);
+  }
+  resetFire = () => {
+    if (this._fireTimer) { clearInterval(this._fireTimer); this._fireTimer = null; }
+    this.setState({ fire: new Array(144).fill(0), tick: 0 }, () => this.renderFireStats());
+  };
+  setWind = (w) => this.setState({ wind: w });
+  tickFire = () => {
+    const { fire, wind } = this.state;
+    const next = fire.slice();
+    const C = this.COLS, R = this.ROWS;
+    let anyBurning = false;
+    const bias = { N: [0,-1], S: [0,1], E: [1,0], W: [-1,0] }[wind];
+    for (let i = 0; i < fire.length; i++) {
+      if (fire[i] !== 1) continue;
+      anyBurning = true;
+      const cx = i % C, cy = (i / C) | 0;
+      const nb = [[1,0],[-1,0],[0,1],[0,-1]];
+      nb.forEach(([dx, dy]) => {
+        const nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= C || ny >= R) return;
+        const ni = ny * C + nx;
+        if (next[ni] !== 0) return;
+        let p = 0.32;
+        if (dx === bias[0] && dy === bias[1]) p = 0.82;
+        else if (dx === -bias[0] && dy === -bias[1]) p = 0.10;
+        if (Math.random() < p) next[ni] = 1;
+      });
+      next[i] = 2;
+    }
+    this.setState(s => ({ fire: next, tick: anyBurning ? s.tick + 1 : s.tick }), () => this.renderFireStats());
+    if (!anyBurning && this._fireTimer) { clearInterval(this._fireTimer); this._fireTimer = null; }
+  };
+  renderFireStats() {
+    const burning = this.state.fire.filter(v => v === 1).length;
+    const burnt = this.state.fire.filter(v => v === 2).length;
+    if (this._burningEl) this._burningEl.textContent = burning;
+    if (this._burntEl) this._burntEl.textContent = burnt;
+  }
+
+  copySql = () => {
+    const sql = 'SELECT building_id,\n       lst_celsius * 0.7 - income_decile * 0.3 AS burden\nFROM   gyeonggi_buildings\nORDER BY burden DESC\nLIMIT  100;';
+    try { navigator.clipboard.writeText(sql); } catch (e) {}
+    this.setState({ copied: true });
+    setTimeout(() => this.setState({ copied: false }), 1400);
+  };
+
+  renderVals() {
+    const s = this.state;
+    const h = React.createElement;
+
+    // Node 1 pins
+    const countryPins = this.COUNTRIES.map((c, i) => h('button', {
+      key: i,
+      className: 'lj-pin',
+      onClick: () => this.selectCountry(i),
+      title: c.name,
+      style: {
+        position: 'absolute', left: c.x + '%', top: c.y + '%', transform: 'translate(-50%,-50%)',
+        cursor: 'pointer', background: 'none', border: 'none', padding: 0,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', zIndex: 2,
+      },
+    }, [
+      h('span', { key: 'd', style: {
+        width: '16px', height: '16px', borderRadius: '50% 50% 50% 0',
+        transform: 'rotate(-45deg)',
+        background: s.country === i ? 'var(--hi-yellow)' : 'var(--accent)',
+        border: '2px solid var(--ink-900)', boxShadow: '1px 1px 0 rgba(34,31,26,.3)',
+      } }),
+      h('span', { key: 'l', style: {
+        font: "500 11px 'Fira Code',monospace", color: 'var(--ink-800)',
+        background: 'rgba(255,253,246,.75)', padding: '0 3px', borderRadius: '3px', whiteSpace: 'nowrap',
+      } }, c.name),
+    ]));
+
+    // Node 2 tabs
+    const bandDefs = [['rgb','True color'],['nir','NIR'],['thermal','Thermal'],['unet','U-Net']];
+    const spectralTabs = bandDefs.map(([k, label]) => {
+      const on = s.band === k;
+      return h('button', { key: k, onClick: () => this.setBand(k), style: {
+        cursor: 'pointer', padding: '6px 13px', borderRadius: '980px',
+        border: '2px solid var(--stroke)',
+        background: on ? 'var(--ink-900)' : 'var(--paper-50)',
+        color: on ? 'var(--paper-50)' : 'var(--ink-700)',
+        font: "400 15px var(--font-marker)",
+      } }, label);
+    });
+
+    // Node 5 tabs
+    const causalDefs = [['both','Both'],['counterfactual','Counterfactual'],['treated','Treated']];
+    const causalTabs = causalDefs.map(([k, label]) => {
+      const on = s.causal === k;
+      return h('button', { key: k, onClick: () => this.setCausal(k), style: {
+        cursor: 'pointer', padding: '6px 13px', borderRadius: '980px',
+        border: '2px solid var(--stroke)',
+        background: on ? 'var(--ink-900)' : 'var(--paper-50)',
+        color: on ? 'var(--paper-50)' : 'var(--ink-700)',
+        font: "400 15px var(--font-marker)",
+      } }, label);
+    });
+
+    // Node 5 chart
+    const showCf = s.causal === 'both' || s.causal === 'counterfactual';
+    const showTr = s.causal === 'both' || s.causal === 'treated';
+    const cfPts = '40,70 100,74 160,80 220,86 280,92 300,96 360,120 420,150 480,176 540,196';
+    const trPts = '40,70 100,74 160,80 220,86 280,92 300,96 360,150 420,196 480,228 540,250';
+    const causalChart = h('svg', { viewBox: '0 0 580 300', style: { width: '100%', height: 'auto', display: 'block' } }, [
+      // grid
+      ...[70,130,190,250].map((y,idx)=>h('line',{key:'g'+idx,x1:40,y1:y,x2:560,y2:y,stroke:'var(--ink-100)',strokeWidth:1})),
+      // treatment line
+      h('line', { key: 'tl', x1: 300, y1: 40, x2: 300, y2: 270, stroke: 'var(--ink-800)', strokeWidth: 1.5, strokeDasharray: '5 5' }),
+      h('text', { key: 'tlt', x: 306, y: 54, style: { font: "500 11px 'Fira Code',monospace", fill: 'var(--ink-600)' } }, 'prescribed burn'),
+      // gap shade
+      s.causal === 'both' ? h('polygon', { key: 'gap', points: '300,96 360,120 420,150 480,176 540,196 540,250 480,228 420,196 360,150 300,96', fill: 'var(--hi-yellow)', opacity: 0.4 }) : null,
+      // counterfactual
+      h('polyline', { key: 'cf', points: cfPts, fill: 'none', stroke: 'var(--lavender-ink)', strokeWidth: showCf ? 3 : 1.4, strokeDasharray: '7 5', opacity: showCf ? 1 : 0.25, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+      // treated
+      h('polyline', { key: 'tr', points: trPts, fill: 'none', stroke: 'var(--ink-900)', strokeWidth: showTr ? 3 : 1.4, opacity: showTr ? 1 : 0.25, strokeLinecap: 'round', strokeLinejoin: 'round' }),
+      // axes labels
+      h('text', { key: 'yl', x: 8, y: 76, style: { font: "500 10px 'Fira Code',monospace", fill: 'var(--ink-400)' } }, 'high'),
+      h('text', { key: 'yl2', x: 12, y: 258, style: { font: "500 10px 'Fira Code',monospace", fill: 'var(--ink-400)' } }, 'low'),
+      h('text', { key: 'xl', x: 40, y: 288, style: { font: "500 10px 'Fira Code',monospace", fill: 'var(--ink-400)' } }, 'time →  wildfire risk'),
+      h('text', { key: 'gaplab', x: 430, y: 180, style: { font: "600 13px 'Fira Code',monospace", fill: 'var(--ink-900)' } }, s.causal === 'both' ? 'Δ −15%' : ''),
+    ]);
+
+    // Node 6 wind buttons + grid
+    const windDefs = [['N','↑'],['E','→'],['S','↓'],['W','←']];
+    const windButtons = windDefs.map(([k, gl]) => {
+      const on = s.wind === k;
+      return h('button', { key: k, onClick: () => this.setWind(k), title: k, style: {
+        cursor: 'pointer', width: '30px', height: '30px', borderRadius: '8px',
+        border: '2px solid var(--stroke)',
+        background: on ? 'var(--accent)' : 'var(--paper-50)',
+        color: on ? 'var(--paper-50)' : 'var(--ink-800)',
+        font: "500 15px 'Fira Code',monospace",
+      } }, gl);
+    });
+
+    const cellColor = (v) => v === 2 ? '#3a2a20' : v === 1 ? '#F97316' : 'var(--paper-200)';
+    const fireGrid = h('div', {
+      style: { display: 'grid', gridTemplateColumns: 'repeat(16,1fr)', gap: '2px', border: '2px solid var(--stroke)', borderRadius: '10px', padding: '4px', background: 'var(--paper-300)' },
+    }, s.fire.map((v, i) => h('div', {
+      key: i,
+      onClick: () => this.igniteCell(i),
+      style: {
+        aspectRatio: '1', borderRadius: '2px', cursor: 'pointer',
+        background: cellColor(v),
+        boxShadow: v === 1 ? '0 0 6px 1px rgba(249,115,22,.8)' : 'none',
+        transition: 'background .3s',
+      },
+    })));
+
+    const c3 = this.compute3();
+
+    return {
+      canopyLabel: s.canopy ? 'Nature canopy' : 'Pure paper',
+      toggleCanopy: this.toggleCanopy,
+      setProg: this.setProg, setRoot: this.setRoot, setRootPath: this.setRootPath,
+      setCanopy: this.setCanopy, setNode: this.setNode,
+      setThemeRoot: this.setThemeRoot, setStop1: this.setStop1, setStop2: this.setStop2, setStop3: this.setStop3, setStop4: this.setStop4,
+      // drawers
+      toggleDrawer1: this.toggleDrawer1, toggleDrawer2: this.toggleDrawer2, toggleDrawer3: this.toggleDrawer3,
+      toggleDrawer4: this.toggleDrawer4, toggleDrawer5: this.toggleDrawer5, toggleDrawer6: this.toggleDrawer6,
+      setDrawer1: this.mkDrawerRef(1), setDrawer2: this.mkDrawerRef(2), setDrawer3: this.mkDrawerRef(3),
+      setDrawer4: this.mkDrawerRef(4), setDrawer5: this.mkDrawerRef(5), setDrawer6: this.mkDrawerRef(6),
+      drawer1Arrow: s.d1 ? '▾' : '▸', drawer2Arrow: s.d2 ? '▾' : '▸', drawer3Arrow: s.d3 ? '▾' : '▸',
+      drawer4Arrow: s.d4 ? '▾' : '▸', drawer5Arrow: s.d5 ? '▾' : '▸', drawer6Arrow: s.d6 ? '▾' : '▸',
+      // node 1
+      countryPins,
+      countryNote: s.country < 0 ? 'Tap a pin to read a note from the field.' : this.COUNTRIES[s.country].note,
+      setCountryNote: this.setCountryNote,
+      // node 2
+      spectralTabs, spectralCaption: this.BANDS[s.band].cap,
+      setSpectral: this.setSpectral, setUnet: this.setUnet, setSpectralCap: this.setSpectralCap,
+      // node 3
+      onHydro: this.onHydro, onSlope: this.onSlope,
+      hydroVal: s.hydro, slopeVal: s.slope,
+      waterVal: c3.water + '%', methaneVal: c3.methane + '%', feasibleVal: 'FEASIBLE PADDIES ' + c3.feasible + '%',
+      setHydroVal: this.setHydroVal, setSlopeVal: this.setSlopeVal, setWater: this.setWater, setMethane: this.setMethane, setFeasible: this.setFeasible,
+      // node 4
+      setTerm: this.setTerm, setRows: this.setRows, setPct: this.setPct, runHPC: this.runHPC,
+      termLines: '$ python stream_pipeline.py  ›  press run', rowsVal: '0', pctVal: '0%',
+      // node 5
+      causalTabs, causalChart,
+      // node 6
+      windButtons, fireGrid, resetFire: this.resetFire,
+      burningVal: s.fire.filter(v=>v===1).length, burntVal: s.fire.filter(v=>v===2).length, tickVal: s.tick,
+      setBurning: this.setBurning, setBurnt: this.setBurnt,
+      // schematic
+      copySql: this.copySql, copyLabel: s.copied ? 'copied ✓' : 'copy',
+    };
+  }
+}
+</script>
+</body>
+</html>

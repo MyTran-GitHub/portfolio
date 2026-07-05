@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<dc-import name="ProjectShell" title="Satellite vision for urban policy" tagline="Remote sensing of urban inequality — San Francisco vs. Seoul." tags="Computer vision, Multi-spectral, Urban inequality, Deep learning" band="#D9EDD2" hint-size="100%,100%">
+
+  <div style="border:2px solid var(--stroke); border-left:6px solid var(--accent); background:var(--paper-50); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; padding:22px 26px; margin-bottom:40px; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+    <div style="font:500 13px 'Fira Code',monospace; letter-spacing:.5px; color:var(--accent-ink); margin-bottom:8px;">RESEARCH QUESTION</div>
+    <p style="margin:0; font:300 19px/1.5 var(--font-body); color:var(--ink-700);">Do satellite images of two cities encode meaningfully different social and environmental signals — and can computer vision surface patterns of urban inequality that ground surveys miss?</p>
+  </div>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Technical stack" doodle="✦" hint-size="100%,50px"></x-import>
+
+  <div style="margin:30px 0 46px;">
+    <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:12px;">PIPELINE</div>
+    <div style="display:flex; flex-wrap:nowrap; align-items:center; gap:10px; overflow-x:auto; padding-bottom:4px;">
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:150px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">Google Earth Engine</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">Sentinel-2 · VIIRS · Landsat 8</div>
+      </div>
+      <span style="font:700 18px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:150px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">GDAL · Rasterio</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">reproject · resample · cloud-mask</div>
+      </div>
+      <span style="font:700 18px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:150px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">PyTorch · U-Net/ViT</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">segmentation + attention</div>
+      </div>
+      <span style="font:700 18px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:150px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">XGBoost</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">inequality index regression</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Three modalities, one city read three ways</h2>
+  <p style="font:300 19px/1.6 var(--font-body); color:var(--ink-600); max-width:680px; margin:0 0 28px;">Each band answers a different policy question. Stacked, they describe who lives where, and how heat and green space are distributed across a city.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px;">
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+      <img src="assets/Seoul_nightlight.jpg" alt="Seoul nighttime lights" style="width:100%; height:170px; object-fit:cover; border-bottom:2px solid var(--stroke);">
+      <div style="padding:14px 16px;"><div style="font:400 19px var(--font-marker); color:var(--ink-900);">Nighttime lights</div><div style="font:500 12px 'Fira Code',monospace; color:var(--ink-400); margin:2px 0 6px;">VIIRS · 500m</div><p style="margin:0; font:300 15px/1.5 var(--font-body); color:var(--ink-600);">Wealth &amp; energy use. Gangnam glows 8× brighter than the outer districts.</p></div>
+    </div>
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+      <img src="assets/Seoul_vegetation.jpg" alt="Seoul vegetation" style="width:100%; height:170px; object-fit:cover; border-bottom:2px solid var(--stroke);">
+      <div style="padding:14px 16px;"><div style="font:400 19px var(--font-marker); color:var(--ink-900);">Vegetation</div><div style="font:500 12px 'Fira Code',monospace; color:var(--ink-400); margin:2px 0 6px;">NDVI · Sentinel-2</div><p style="margin:0; font:300 15px/1.5 var(--font-body); color:var(--ink-600);">Green access as an equity signal — a 3.1× gap between richest and poorest wards.</p></div>
+    </div>
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+      <img src="assets/Seoul_LST.jpg" alt="Seoul land surface temperature" style="width:100%; height:170px; object-fit:cover; border-bottom:2px solid var(--stroke);">
+      <div style="padding:14px 16px;"><div style="font:400 19px var(--font-marker); color:var(--ink-900);">Thermal</div><div style="font:500 12px 'Fira Code',monospace; color:var(--ink-400); margin:2px 0 6px;">LST · Landsat 8</div><p style="margin:0; font:300 15px/1.5 var(--font-body); color:var(--ink-600);">Land-surface temperature exposes the urban heat-island burden by neighbourhood.</p></div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:46px;">
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden;"><img src="assets/SF_nightlight.jpg" alt="SF nighttime lights" style="width:100%; height:150px; object-fit:cover;"></div>
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden;"><img src="assets/SF_vegetation.jpg" alt="SF vegetation" style="width:100%; height:150px; object-fit:cover;"></div>
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden;"><img src="assets/SF_LST.jpeg" alt="SF land surface temperature" style="width:100%; height:150px; object-fit:cover;"></div>
+  </div>
+  <div style="text-align:center; font:400 16px var(--font-accent); color:var(--ink-400); margin-top:-32px; margin-bottom:46px;">San Francisco, the same three bands ↑</div>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Engineering decision record" doodle="✦" hint-size="100%,50px"></x-import>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:30px 0 8px;">Why vision kept changing</h2>
+  <p style="font:300 19px/1.6 var(--font-body); color:var(--ink-600); max-width:680px; margin:0 0 34px;">Three architectures, three different failure modes — not a straight line to the "best" model, but a record of what the previous one got wrong.</p>
+
+  <div style="position:relative; padding-left:26px; border-left:2px dashed var(--ink-300); display:flex; flex-direction:column; gap:36px; margin-bottom:20px;">
+
+    <div style="position:relative; display:grid; grid-template-columns:1.1fr 0.9fr; gap:26px; align-items:center;">
+      <span style="position:absolute; left:-33px; top:2px; width:14px; height:14px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke);"></span>
+      <div>
+        <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">PHASE 1 · CNN CLASSIFICATION</div>
+        <h3 style="font:400 22px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">ResNet-50 hits a wall</h3>
+        <p style="font:300 17px/1.6 var(--font-body); color:var(--ink-600); margin:0 0 10px;">A whole-image classifier can say a tile is "urban" — it can't say where the block ends and the shadow begins. ResNet-50 kept losing the boundary between neighbourhoods whenever a cloud shadow crossed it, because classification throws away exactly the spatial structure a policy map needs.</p>
+        <div style="background:var(--hi-mint); border-left:4px solid var(--accent); border-radius:4px 12px 4px 12px; padding:14px 18px;">
+          <p style="font:300 15px/1.6 var(--font-body); color:var(--ink-500); margin:0;">The model is noticeably less confident on low-wealth residential blocks — F1 of <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">0.79</strong> in SF, <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">0.72</strong> in Seoul — mistaking them for industrial zones <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">~1 in 5</strong> times.</p>
+        </div>
+      </div>
+      <div style="position:relative; transform:rotate(1deg);">
+        <div style="position:absolute; top:-10px; right:18px; z-index:2;"><x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="blue" hint-size="auto,28px">ResNet-50</x-import></div>
+        <div style="border:2px solid var(--stroke); border-radius:10px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);"><img src="assets/model_performance.png" alt="ResNet-50 classification results" style="width:100%; display:block;"></div>
+      </div>
+    </div>
+
+    <div style="position:relative; max-width:640px;">
+      <span style="position:absolute; left:-33px; top:2px; width:14px; height:14px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke);"></span>
+      <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">PHASE 2 · U-NET SEGMENTATION</div>
+      <h3 style="font:400 22px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Trading a label for a map</h3>
+      <p style="font:300 17px/1.6 var(--font-body); color:var(--ink-600); margin:0 0 10px;">The fix wasn't a bigger classifier — it was a different question. U-Net predicts a class for <em>every pixel</em>, so it preserves the physical geometry of a block instead of collapsing it into one tag. That dense, pixel-level view is what let us measure inequality by neighbourhood rather than by city.</p>
+      <div style="display:inline-flex; align-items:center; gap:9px; padding:6px 13px; border:1.5px solid var(--stroke); background:var(--paper-50); border-radius:980px; font:500 12.5px 'Fira Code',monospace; color:var(--ink-700); margin-bottom:8px;">▹ 95% mIoU on held-out tiles</div>
+      <div style="font:300 15px/1.6 var(--font-body); color:var(--ink-500);">Tree canopy tells the story in both cities — <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">35%→12%</strong> across wealthy-to-poor San Francisco blocks, a nearly-as-wide <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">28%→9%</strong> in Seoul — while building footprint runs the other way, denser in poor neighbourhoods (<strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">72%</strong>) than wealthy ones (<strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">48%</strong>).</div>
+    </div>
+
+    <div style="position:relative; display:grid; grid-template-columns:0.9fr 1.1fr; gap:26px; align-items:center;">
+      <span style="position:absolute; left:-33px; top:2px; width:14px; height:14px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke);"></span>
+      <div style="position:relative; transform:rotate(-1deg);">
+        <div style="position:absolute; top:-10px; left:18px; z-index:2;"><x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="mint" hint-size="auto,28px">ViT attention</x-import></div>
+        <div style="border:2px solid var(--stroke); border-radius:10px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);"><img src="assets/vit_embeddings_attention.png" alt="Vision transformer attention embeddings" style="width:100%; display:block;"></div>
+      </div>
+      <div>
+        <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">PHASE 3 · VISION TRANSFORMERS</div>
+        <h3 style="font:400 22px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Letting attention find the pattern</h3>
+        <p style="font:300 17px/1.6 var(--font-body); color:var(--ink-600); margin:0 0 14px;">A U-Net still looks at a fixed neighbourhood of pixels. Self-attention doesn't — it lets any patch of the image relate to any other, across all 13 spectral bands at once. That's what surfaces morphology a convolution misses: a corridor of heat that only reads as a pattern from across the whole city.</p>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+          <div style="border:1.5px solid var(--stroke); border-radius:10px; padding:10px 12px; background:var(--paper-50);">
+            <div style="font:400 15px var(--font-marker); color:var(--ink-900); margin-bottom:3px;">ViT-B/16</div>
+            <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">R² 0.74 · 150ms</div>
+          </div>
+          <div style="border:1.5px solid var(--stroke); border-radius:10px; padding:10px 12px; background:var(--hi-mint);">
+            <div style="font:400 15px var(--font-marker); color:var(--ink-900); margin-bottom:3px;">DiffusionSat</div>
+            <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-700);">R² 0.81 · best fit</div>
+          </div>
+          <div style="border:1.5px solid var(--stroke); border-radius:10px; padding:10px 12px; background:var(--paper-50);">
+            <div style="font:400 15px var(--font-marker); color:var(--ink-900); margin-bottom:3px;">ResNet-152</div>
+            <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">R² 0.68 · 30ms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Comparative findings" doodle="✦" hint-size="100%,50px"></x-import>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:30px 0 20px;">San Francisco vs. Seoul</h2>
+
+  <div style="border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14); margin-bottom:28px;">
+    <img src="assets/comparative_dashboard.png" alt="Comparative inequality dashboard" style="width:100%; display:block;">
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; margin-bottom:28px;">
+    <div style="padding-right:28px;">
+      <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">SAN FRANCISCO</div>
+      <h3 style="font:400 20px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Topography &amp; zoning drive the heat</h3>
+      <div style="font:300 15px/1.55 var(--font-body); color:var(--ink-600); margin-bottom:8px;">The clearest signal is temperature — a 5.2°C gap between the richest and poorest census tracts, concentrated in the wealthy hills where tree cover is thickest.</div>
+      <div style="height:10px; border-radius:6px; background:var(--paper-200); border:1.5px solid var(--stroke); overflow:hidden;"><div style="height:100%; width:65%; background:var(--accent-ink);"></div></div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-500); margin-top:5px;">Δ5.2°C</div>
+    </div>
+    <div style="padding-left:28px; border-left:2px dashed var(--ink-300);">
+      <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">SEOUL</div>
+      <h3 style="font:400 20px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Density writes its own corridors</h3>
+      <div style="font:300 15px/1.55 var(--font-body); color:var(--ink-600); margin-bottom:8px;">Seoul's gap is even wider — 7.8°C between richest and poorest tracts, the largest of either city, driven by thinner canopy and denser concrete corridors.</div>
+      <div style="height:10px; border-radius:6px; background:var(--paper-200); border:1.5px solid var(--stroke); overflow:hidden;"><div style="height:100%; width:98%; background:var(--accent-ink);"></div></div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-500); margin-top:5px;">Δ7.8°C</div>
+    </div>
+  </div>
+
+  <p style="font-weight:400; font-size:26px; line-height:1.4; font-family:'Patrick Hand','Comic Sans MS',cursive; color:var(--ink-800); max-width:720px; margin:0 0 40px;">Two cities, two different reasons to plant the same tree — which is exactly why a one-size-fits-all greening policy keeps missing.</p>
+
+</dc-import>
+</x-dc>
+</body>
+</html>

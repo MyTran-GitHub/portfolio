@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<dc-import name="ProjectShell" title="The Map" tagline="Where does intervention matter most? Geospatial suitability modeling of water-saving AWD irrigation in Japan." tags="Multi-criteria Decision Analysis, Multi-sensor Data Fusion, Hydrological Spatial Modeling, Agriculture Climate Adaptation" repo-url="https://github.com/MyTran-GitHub/AWD-policy.git" band="#D9EDD2" hint-size="100%,100%">
+
+  <div style="border:2px solid var(--stroke); border-left:6px solid #1F8A5B; background:var(--paper-50); border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; padding:22px 26px; margin-bottom:40px; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+    <div style="font:500 13px 'Fira Code',monospace; letter-spacing:.5px; color:#1F8A5B; margin-bottom:8px;">RESEARCH QUESTION</div>
+    <p style="margin:0; font:300 19px/1.5 var(--font-body); color:var(--ink-700);">Alternate Wetting &amp; Drying saves water in the Mekong. Does that success transfer to Japan, and where?</p>
+  </div>
+
+  <div style="margin:0 0 46px;">
+    <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:12px;">PIPELINE</div>
+    <div style="display:flex; flex-wrap:nowrap; align-items:center; gap:10px; overflow-x:auto; padding-bottom:4px;">
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:170px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">Google Earth Engine</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">CHIRPS · MOD16A2 · SRTM · SoilGrids</div>
+      </div>
+      <span style="font:700 18px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:170px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">Xarray + Rasterio</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">chunk yearly rasters into dekadal arrays for spatiotemporal water-balance modeling</div>
+      </div>
+      <span style="font:700 18px 'Fira Code',monospace; color:var(--accent-ink); flex-shrink:0;">→</span>
+      <div style="background:var(--hi-mint); border:1.5px solid var(--stroke); border-radius:10px; padding:12px 14px; flex:1; min-width:170px;">
+        <div style="font:500 12.5px 'Fira Code',monospace; color:var(--ink-900);">GeoPandas</div>
+        <div style="font:400 11px 'Fira Code',monospace; color:var(--ink-600); margin-top:5px;">vectorize suitability raster; fragmentation &amp; clustering analysis</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Two countries, one water balance</h2>
+  <p style="font:300 19px/1.6 var(--font-body); color:var(--ink-600); max-width:680px; margin:0 0 26px;">A water-balance suitability model over hydrological index and topographic slope, run on both landscapes. Where Vietnam is broad and flat, Japan is steep and fragmented — and the map tells the story.</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:46px;">
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14); transform:rotate(-.5deg);">
+      <img src="assets/VN_suitability.jpg" alt="Vietnam suitability" style="width:100%; height:300px; object-fit:cover; border-bottom:2px solid var(--stroke);">
+      <div style="padding:14px 16px;"><div style="font:400 20px var(--font-marker); color:var(--ink-900);">Vietnam — the origin</div><p style="margin:6px 0 0; font:300 15px/1.5 var(--font-body); color:var(--ink-600);">Broad deltas, gentle slope: AWD's home conditions, widely feasible.</p></div>
+    </div>
+    <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:12px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14); transform:rotate(.5deg);">
+      <img src="assets/Japan_suitability.png" alt="Japan suitability" style="width:100%; height:300px; object-fit:cover; border-bottom:2px solid var(--stroke);">
+      <div style="padding:14px 16px;"><div style="font:400 20px var(--font-marker); color:var(--ink-900);">Japan — the test</div><p style="margin:6px 0 0; font:300 15px/1.5 var(--font-body); color:var(--ink-600);">Only 18% of paddies clear the bar once slope and fragmentation are honest.</p></div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:24px;">
+    <div class="pd-tip" style="border:2px solid var(--stroke); background:var(--pen-red-soft); border-radius:12px; padding:16px 18px; transform:rotate(-.6deg);">
+      <div style="font:500 34px 'Fira Code',monospace; color:var(--ink-900);">62% → 18%</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">NAÏVE VS. RIGOROUS FEASIBLE AREA</div>
+      <span class="pd-tip-pop">Share of Japan's paddies that look suitable for AWD if you only check water availability, versus the share that clears the bar once slope and field fragmentation are also required.</span>
+    </div>
+    <div class="pd-tip" style="border:2px solid var(--stroke); background:var(--hi-yellow); border-radius:12px; padding:16px 18px; transform:rotate(.5deg);">
+      <div style="font:500 34px 'Fira Code',monospace; color:var(--ink-900);">3.4×</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">OVERESTIMATION IF SLOPE IGNORED</div>
+      <span class="pd-tip-pop">How many times larger the "feasible" area looks if topographic slope is left out of the suitability model — the gap between the naïve and rigorous estimates.</span>
+    </div>
+    <div class="pd-tip" style="border:2px solid var(--stroke); background:var(--hi-mint); border-radius:12px; padding:16px 18px; transform:rotate(-.4deg);">
+      <div style="font:500 34px 'Fira Code',monospace; color:var(--ink-900);">3.8×</div>
+      <div style="font:500 12px 'Fira Code',monospace; color:var(--ink-600);">EXTENSION COST · FRAGMENTED TERRAIN</div>
+      <span class="pd-tip-pop">How much more it costs per hectare to run farmer extension programs on Japan's small, fragmented paddies compared to Vietnam's broad, contiguous ones.</span>
+    </div>
+  </div>
+
+  <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:15px 225px 15px 255px / 255px 15px 225px 15px; padding:26px 30px; box-shadow:2px 3px 0 rgba(34,31,26,.14); margin-bottom:46px;">
+    <h2 style="font:400 26px var(--font-marker); color:var(--ink-900); margin:0 0 12px;">The honest number matters</h2>
+    <p style="font:300 18px/1.62 var(--font-body); color:var(--ink-600); margin:0;">A naïve transfer would greenlight AWD across 62% of Japan. Account for topographic slope and field fragmentation, and only 18% is truly feasible — a 3.4× overestimation, with extension costs 3.8× higher on the fragmented terrain that remains. <strong style="color:var(--ink-800);">Knowing where <em>not</em> to deploy is as valuable as knowing where to.</strong></p>
+  </div>
+
+  <x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.Divider" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" variant="dashed" label="Engineering decision record" doodle="✦" hint-size="100%,50px"></x-import>
+
+  <h2 style="font:400 30px var(--font-marker); color:var(--ink-900); margin:30px 0 8px;">Why the naïve model overestimated by 3.4×</h2>
+  <p style="font:300 19px/1.6 var(--font-body); color:var(--ink-600); max-width:700px; margin:0 0 34px;">Water deficit alone doesn't make a paddy AWD-suitable. How you <em>count</em> that deficit does — and the standard model counts it the wrong way.</p>
+
+  <div style="position:relative; padding-left:26px; border-left:2px dashed var(--ink-300); display:flex; flex-direction:column; gap:36px; margin-bottom:20px;">
+
+    <div style="position:relative; display:grid; grid-template-columns:1.15fr 0.85fr; gap:26px; align-items:center;">
+      <span style="position:absolute; left:-33px; top:2px; width:14px; height:14px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke);"></span>
+      <div>
+        <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">THE PROBLEM · NELSON–SANDER DEKAD COUNTING</div>
+        <h3 style="font:400 22px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">Every deficit counted the same</h3>
+        <p style="font:300 17px/1.6 var(--font-body); color:var(--ink-600); margin:0 0 10px;">The water balance for each dekad (10-day period) is <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">WB = P − (PET + Percolation)</strong> — rainfall minus evapotranspiration and soil percolation. The standard model just flags WB &lt; 0 as "a suitable drying dekad," whether the shortfall is −5&nbsp;mm or −150&nbsp;mm.</p>
+        <div style="background:var(--hi-mint); border-left:4px solid #1F8A5B; border-radius:4px 12px 4px 12px; padding:14px 18px;">
+          <p style="font:300 16px/1.6 var(--font-body); color:var(--ink-700); margin:0;">That's the bug: a −150&nbsp;mm dekad doesn't mean gentler drying, it means the field has blown past the soil-moisture threshold into crop stress — the opposite of AWD-suitable. Counting it as a win is what inflates the map to <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">62%</strong> of Japan.</p>
+        </div>
+      </div>
+      <div style="position:relative; transform:rotate(1deg);">
+        <div style="position:absolute; top:-10px; right:18px; z-index:2;"><x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="pink" hint-size="auto,28px">naïve WB layer</x-import></div>
+        <div style="border:2px solid var(--stroke); border-radius:10px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);"><img src="assets/awd-originalWB.png" alt="Naive water balance suitability, overestimated" style="width:100%; display:block;"></div>
+      </div>
+    </div>
+
+    <div style="position:relative; display:grid; grid-template-columns:0.85fr 1.15fr; gap:26px; align-items:center;">
+      <span style="position:absolute; left:-33px; top:2px; width:14px; height:14px; border-radius:50%; background:var(--paper-50); border:2px solid var(--stroke);"></span>
+      <div style="position:relative; transform:rotate(-1deg);">
+        <div style="position:absolute; top:-10px; left:18px; z-index:2;"><x-import component-from-global-scope="PaperdoodleDesignSystem_9051b3.WashiTape" from="_ds/paperdoodle-design-system-9051b37f-c90e-4639-84d7-88aea9accfc2/_ds_bundle.js" color="mint" hint-size="auto,28px">−50mm cut</x-import></div>
+        <div style="border:2px solid var(--stroke); border-radius:10px; overflow:hidden; box-shadow:2px 3px 0 rgba(34,31,26,.14);"><img src="assets/awd-thresh-50.png" alt="Threshold-based corrected suitability" style="width:100%; display:block;"></div>
+      </div>
+      <div>
+        <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:6px;">THE FIX · CUSTOM PYTHON + GOOGLE EARTH ENGINE</div>
+        <h3 style="font:400 22px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">A threshold, not a coin flip</h3>
+        <p style="font:300 17px/1.6 var(--font-body); color:var(--ink-600); margin:0 0 10px;">We rebuilt the dekad-level water balance in Earth Engine — CHIRPS daily rainfall summed to dekads, MODIS MOD16A2 evapotranspiration reprojected to the 500m study grid, percolation from SoilGrids texture class — then reclassified deficit against a <strong style="font-family:'Fira Code',monospace; font-weight:600; color:var(--ink-800);">−50mm safe-drying ceiling</strong> instead of a bare zero.</p>
+        <div style="background:var(--hi-mint); border-left:4px solid #1F8A5B; border-radius:4px 12px 4px 12px; padding:14px 18px;">
+          <p style="font:300 15px/1.6 var(--font-body); color:var(--ink-500); margin:0;">A dekad only counts as suitable if the deficit occurs <em>and</em> stays inside that ceiling. Re-run at that threshold, the map drops from 62% to a defensible 32% before biophysical constraints are even applied.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:var(--surface-card); border:2px solid var(--stroke); border-radius:14px; padding:26px 30px; margin-bottom:46px;">
+    <div style="font:500 12px 'Fira Code',monospace; letter-spacing:.6px; color:var(--ink-400); margin-bottom:8px;">INTERACTIVE · THRESHOLD SENSITIVITY SWEEP</div>
+    <h3 style="font:400 22px var(--font-marker); color:var(--ink-900); margin:0 0 8px;">How strict should "safe" be?</h3>
+    <p style="font:300 16px/1.6 var(--font-body); color:var(--ink-600); margin:0 0 18px; max-width:640px;">Drag to change the maximum allowable water deficit per dekad. Looser thresholds count more area as suitable — but risk pushing paddies past safe drying.</p>
+
+    <input type="range" min="0" max="6" step="1" value="{{ idx }}" onInput="{{ onSlide }}" style="width:100%; accent-color:#1F8A5B; cursor:pointer; height:6px;">
+    <div style="display:flex; justify-content:space-between; font:500 11px 'Fira Code',monospace; color:var(--ink-400); margin-top:6px;">
+      <span>−25mm · strict</span><span>−150mm · lenient</span>
+    </div>
+
+    <div style="display:flex; gap:30px; margin:20px 0 4px; flex-wrap:wrap;">
+      <div><div style="font:500 30px 'Fira Code',monospace; color:var(--ink-900);">{{ curLabel }}</div><div style="font:500 11px 'Fira Code',monospace; letter-spacing:.5px; color:var(--ink-500);">THRESHOLD</div></div>
+      <div><div style="font:500 30px 'Fira Code',monospace; color:var(--ink-900);">{{ curSuitable }}%</div><div style="font:500 11px 'Fira Code',monospace; letter-spacing:.5px; color:var(--ink-500);">SUITABLE AREA</div></div>
+      <div><div style="font:500 30px 'Fira Code',monospace; color:var(--ink-900);">{{ curDekads }}%</div><div style="font:500 11px 'Fira Code',monospace; letter-spacing:.5px; color:var(--ink-500);">DEKADS WITH DEFICIT</div></div>
+    </div>
+
+    <div style="text-align:center; margin-top:14px;">
+      <img src="{{ curSrc }}" alt="AWD suitability at selected threshold" style="max-width:440px; width:100%; border:2px solid var(--stroke); border-radius:10px; box-shadow:2px 3px 0 rgba(34,31,26,.14);">
+    </div>
+
+    <sc-if value="{{ isRecommended }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center; margin-top:18px;">
+        <div style="display:inline-flex; align-items:center; gap:9px; padding:8px 15px; border:1.5px solid var(--stroke); background:var(--hi-yellow); border-radius:980px; font:500 13px 'Fira Code',monospace; color:var(--ink-800);">✦ chosen for the final composite — best balance of coverage vs. yield risk</div>
+      </div>
+    </sc-if>
+  </div>
+
+</dc-import>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { idx: 1 };
+
+  thresholds = [
+    { value: 25,  src: "assets/awd-thresh-25.png",  label: "−25 mm",  suitableArea: 18, dekads: 22 },
+    { value: 50,  src: "assets/awd-thresh-50.png",  label: "−50 mm",  suitableArea: 32, dekads: 48 },
+    { value: 70,  src: "assets/awd-thresh-70.png",  label: "−70 mm",  suitableArea: 42, dekads: 60 },
+    { value: 90,  src: "assets/awd-thresh-90.png",  label: "−90 mm",  suitableArea: 52, dekads: 68 },
+    { value: 110, src: "assets/awd-thresh-110.png", label: "−110 mm", suitableArea: 62, dekads: 75 },
+    { value: 130, src: "assets/awd-thresh-130.png", label: "−130 mm", suitableArea: 66, dekads: 80 },
+    { value: 150, src: "assets/awd-thresh-150.png", label: "−150 mm", suitableArea: 69, dekads: 85 }
+  ];
+
+  renderVals() {
+    const idx = this.state.idx;
+    const cur = this.thresholds[idx];
+    return {
+      idx: idx,
+      curLabel: cur.label,
+      curSrc: cur.src,
+      curSuitable: cur.suitableArea,
+      curDekads: cur.dekads,
+      isRecommended: cur.value === 50,
+      onSlide: (e) => this.setState({ idx: parseInt(e.target.value, 10) })
+    };
+  }
+}
+</script>
+</body>
+</html>
